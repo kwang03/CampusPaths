@@ -3,16 +3,25 @@
 
 1. Why did Fibonacci fail the testThrowsIllegalArgumentException< test? What (if anything) did
 you have to do to fix it? If you did not have to change anything to fix this issue, explain why.
-
+It failed because getFibTerm() threw an illegalargumentexception if n was less than or equal to 0.
+Therefore when n = 0 it threw the exception which should happen because 0 is not negative. To fix it
+I changed the condition to throw an exception from n <= 0 to n < 0.
 
 
 2. Why did Fibonacci fail the testBaseCase test? What (if anything) did you have to do to fix
 it? If you did not have to change anything to fix this issue, explain why.
-
+It failed because getFibTerm() was throwing an exception when n = 0 when it should have been returning
+1. So, in testBaseCase when it was expecting a 1 from n = 0, it instead got a exception making the
+test fail. To fix this I corrected the condition to throw an exception as described above. Additionally,
+getFibTerm() was incorrectly returning 1 when n = 2 because it returned 1 when n <= 2, so I changed
+that to n < 2.
 
 
 3.Why did Fibonacci fail the testInductiveCase test? What (if anything) did you have to do to
 fix it? If you did not have to change anything to fix this issue, explain why.
-
+It failed because getFibTerm() was returning getFibTerm(n - 1) - getFibTerm(n - 2) when n >= 2.
+This incorrectly returns fib terms when n >= 2 because the Fibonacci sequence is defined as
+getFibTerm(n - 1) + getFibTerm(n - 2) when n >= 2. So, to fix it I simply changed the minus sign
+to a plus sign.
 
 
