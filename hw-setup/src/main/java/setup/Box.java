@@ -12,6 +12,8 @@
 package setup;
 
 import java.lang.Iterable;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Iterator;
 
 /**
@@ -25,6 +27,7 @@ public class Box implements Iterable<Ball> {
      * ballContainer is used to internally store balls for this Box
      */
     private BallContainer ballContainer;
+    private double maxVolume;
 
     /**
      * Constructor that creates a new box.
@@ -33,7 +36,8 @@ public class Box implements Iterable<Ball> {
      */
     public Box(double maxVolume) {
         // Your code goes here.  Remove the exception after you're done.
-        throw new RuntimeException("Method not implemented");
+        this.maxVolume = maxVolume;
+        ballContainer = new BallContainer();
     }
 
     /**
@@ -65,7 +69,13 @@ public class Box implements Iterable<Ball> {
      */
     public boolean add(Ball b) {
         // Your code goes here.  Remove the exception after you're done.
-        throw new RuntimeException("Method not implemented");
+        if(ballContainer.add(b) && ballContainer.getVolume() <= maxVolume){
+            return true;
+        }
+        if(ballContainer.getVolume() > maxVolume){
+            ballContainer.remove(b);
+        }
+        return false;
     }
 
     /**
@@ -78,9 +88,20 @@ public class Box implements Iterable<Ball> {
      */
     public Iterator<Ball> getBallsFromSmallest() {
         // Your code goes here.  Remove the exception after you're done.
-        throw new RuntimeException("Method not implemented");
+        ArrayList<Ball> list = new ArrayList<>();
+        for(Ball b: ballContainer){
+            list.add(b);
+        }
+        Comparator<Ball> c = new BallComparator();
+        list.sort(c);
+        return list.iterator();
     }
 
+    private static class BallComparator implements Comparator<Ball>{
+        public int compare(Ball o1, Ball o2){
+            return Double.compare(o1.getVolume(), o2.getVolume());
+        }
+    }
     /**
      * Removes a ball from the box. This method returns
      * <code>true</code> if ball was successfully removed from the
