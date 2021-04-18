@@ -3,15 +3,58 @@
 ###########################################################################
 
 1. Multiplication Pseudocode
-
+r = p*q:
+    {Inv: r = q * [p_0 + ... + p_{j-1}] where p_j is the jth term in p}
+    for each term t_p in p:
+        define an empty polynomial i
+        {Inv: i = t_p *[q_0 + ... + q_{k - 1}] where q_k is the kth term in q}
+        for each term t_q in q:
+            add the result of t_p * t_q to i as a new term
+        use polynomial addition to add i to r
 
 
 2. Division Pseudocode
 
-
+q = u/v:
+    if u or v is Nan or v is 0
+        then return a NaN polynomial
+    set r = u by making a term-by-term copy of all terms in u to r
+    q is an initially empty (zero) polynomial
+    t = first term in v
+    {Inv: u = q * v + r}
+    while the first term in r's degree is greater than or equal to t's degree:
+        d = the first term in r divided by t
+        add d to q (d is equivalent to a single-term polynomial, so we can use poly-poly addition)
+        m = d multiplied by v (d is equivalent to a single-term polynomial, so we can use poly-poly multiplication)
+        m = -1 multiplied by m (-1 can be treated as a single-term polynomial, so we can use poly-poly multiplication)
+        set r to be the sum of m and r
 
 3. Division Example: (x3+x-1) / (x+1) = x2-x+2
-
+    u = (x^3+x-1)
+    v = (x+1)
+    r = copy of u = (x^3+x-1)
+    q = (0)
+    t = x
+    while first term in r's degree is greater than or equal to t's degree:
+        Iteration 1:
+            [d = the first term in r divided by t] d = x^2
+            [add d to q] q = x^2
+            [m = d multiplied by v] m = x^3 + x^2
+            [m = -1 multiplied by m] m = -x^3 - x^2
+            [set r to be sum of m and r] r = -x^2 + x - 1
+        Iteration 2:
+            [d = the first term in r divided by t] d = -x
+            [add d to q] q = x^2 - x
+            [m = d multiplied by v] m = -x^2 -x
+            [m = -1 multiplied by m] m = x^2 + x
+            [set r to be sum of m and r] r = 2x - 1
+        Iteration 3:
+            [d = the first term in r divided by t] d = 2
+            [add d to q] q = x^2 - x + 2
+            [m = d multiplied by v] m = 2x + 2
+            [m = -1 multiplied by m] m = -2x - 2
+            [set r to be sum of m and r] r = -3
+    We are done! q = x^2 - x + 2
 
 
 
@@ -19,12 +62,34 @@
 ###########################################################################
 
 1. Weakened Rep Invariant
+Methods/Constructors that must change: checkRep(), toString(), hashCode(), equals(Object obj)
+checkRep() must change with the new invariant by removing the check to see if the RatNum
+is in lowest form or not. By removing a condition to check, the method is more technically more efficient.
 
+toString() must change by first finding the reduced form of the RatNum before returning the ratio String. This
+change would make the toString method less efficient and harder to understand due to the added steps.
 
+hashCode() must change by first finding the reduced values of numer and denom before returning the hashcode. This
+change would again make the hashCode method less efficient and harder to understand due to added steps.
+
+equals() must change by first finding the reduced values of numer and denom of both this and obj before evaluating
+whether they are both the same. This again would be adding steps to the equals method which would decrease
+efficiency and make it harder to understand.
+
+Method/Constructors that can change: RatNum(int n), RatNum(int n, int d),
+RatNum(int n) can change in that we can multiply numer and denom by the same constant when assigning
+their values since the RatNum no longer has to be in reduced form. This however would be a odd change
+to make because it just makes our code less clear and our represented number more complicated.
+
+RatNum(int n, int d) can change in the else branch by removing the code to reduce the ratio to lowest
+terms. This change could be one we might consider because it would mean that the numerator and denominator
+given by the client are the ones that we actually store.
 
 2. Alternate add, sub, mul, div
-
-
+The new changes would fail to meet the specifications of the methods because the specifications do not call for
+this to be modified but with the new implementation we would be changing this. Furthermore it would violate the
+specifications of the class because RatNum is supposed to be immutable but these changed methods would in
+fact mutate instances of the class.
 
 3. Constructor checkReps
 
