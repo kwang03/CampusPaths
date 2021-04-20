@@ -74,7 +74,13 @@ public final class RatTerm {
      */
     public RatTerm(RatNum c, int e) {
         // TODO: Fill in this method, then remove the RuntimeException
-        throw new RuntimeException("RatTerm.constructor is not yet implemented");
+        this.coeff = c;
+        if(c.equals(RatNum.ZERO)){
+            this.expt = 0;
+        } else {
+            this.expt = e;
+        }
+        checkRep();
     }
 
     /**
@@ -84,7 +90,7 @@ public final class RatTerm {
      */
     public RatNum getCoeff() {
         // TODO: Fill in this method, then remove the RuntimeException
-        throw new RuntimeException("RatTerm.getCoeff() is not yet implemented");
+        return coeff;
     }
 
     /**
@@ -94,7 +100,7 @@ public final class RatTerm {
      */
     public int getExpt() {
         // TODO: Fill in this method, then remove the RuntimeException
-        throw new RuntimeException("RatTerm.getExpt() is not yet implemented");
+        return expt;
     }
 
     /**
@@ -104,7 +110,7 @@ public final class RatTerm {
      */
     public boolean isNaN() {
         // TODO: Fill in this method, then remove the RuntimeException
-        throw new RuntimeException("RatTerm.isNaN() is not yet implemented");
+        return coeff.isNaN();
     }
 
     /**
@@ -114,7 +120,7 @@ public final class RatTerm {
      */
     public boolean isZero() {
         // TODO: Fill in this method, then remove the RuntimeException
-        throw new RuntimeException("RatTerm.isZero() is not yet implemented");
+        return coeff.equals(RatNum.ZERO);
     }
 
     /**
@@ -127,7 +133,7 @@ public final class RatTerm {
     public double eval(double d) {
         // TODO: Fill in this method, then remove the RuntimeException
         // Hint: You may find java.lang.Math's pow() method useful.
-        throw new RuntimeException("RatTerm.eval() is not yet implemented");
+        return coeff.doubleValue() * Math.pow(d, expt);
     }
 
     /**
@@ -137,7 +143,7 @@ public final class RatTerm {
      */
     public RatTerm negate() {
         // TODO: Fill in this method, then remove the RuntimeException
-        throw new RuntimeException("RatTerm.negate() is not yet implemented");
+        return new RatTerm(coeff.negate(), expt);
     }
 
     /**
@@ -151,7 +157,15 @@ public final class RatTerm {
      */
     public RatTerm add(RatTerm arg) {
         // TODO: Fill in this method, then remove the RuntimeException
-        throw new RuntimeException("RatTerm.add() is not yet implemented");
+        if(this.isNaN() || arg.isNaN()){
+            return NaN;
+        } else if(this.isZero() || arg.isZero()){
+            return new RatTerm(this.coeff.add(arg.coeff), this.expt + arg.expt);
+        } else if(this.expt != arg.expt){
+            throw new IllegalArgumentException();
+        } else{
+            return new RatTerm(this.coeff.add(arg.coeff), this.expt);
+        }
     }
 
     /**
@@ -165,7 +179,7 @@ public final class RatTerm {
      */
     public RatTerm sub(RatTerm arg) {
         // TODO: Fill in this method, then remove the RuntimeException
-        throw new RuntimeException("RatTerm.sub() is not yet implemented");
+        return this.add(arg.negate());
     }
 
     /**
@@ -177,7 +191,7 @@ public final class RatTerm {
      */
     public RatTerm mul(RatTerm arg) {
         // TODO: Fill in this method, then remove the RuntimeException
-        throw new RuntimeException("RatTerm.mul() is not yet implemented");
+        return new RatTerm(this.coeff.mul(arg.coeff), this.expt + arg.expt);
     }
 
     /**
@@ -190,7 +204,7 @@ public final class RatTerm {
      */
     public RatTerm div(RatTerm arg) {
         // TODO: Fill in this method, then remove the RuntimeException
-        throw new RuntimeException("RatTerm.div() is not yet implemented");
+        return new RatTerm(this.coeff.div(arg.coeff), this.expt - arg.expt);
     }
 
     /**
@@ -204,7 +218,7 @@ public final class RatTerm {
      */
     public RatTerm differentiate() {
         // TODO: Fill in this method, then remove the RuntimeException
-        throw new RuntimeException("RatTerm.differentiate() is not yet implemented");
+        return new RatTerm(this.coeff.mul(new RatNum(this.expt)), this.expt - 1);
     }
 
     /**
@@ -219,7 +233,7 @@ public final class RatTerm {
      */
     public RatTerm antiDifferentiate() {
         // TODO: Fill in this method, then remove the RuntimeException
-        throw new RuntimeException("RatTerm.antiDifferentiate() unimplemented!");
+        return new RatTerm(this.coeff.div(new RatNum(this.expt + 1)), this.expt + 1);
     }
 
     /**

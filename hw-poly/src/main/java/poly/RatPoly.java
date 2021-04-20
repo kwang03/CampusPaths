@@ -88,7 +88,11 @@ public final class RatPoly {
      */
     public RatPoly(RatTerm rt) {
         // TODO: Fill in this method, then remove the RuntimeException
-        throw new RuntimeException("RatPoly constructor is not yet implemented");
+        terms = new ArrayList<RatTerm>();
+        if(!rt.isZero()){
+            terms.add(rt);
+        }
+        checkRep();
     }
 
     /**
@@ -100,7 +104,11 @@ public final class RatPoly {
      */
     public RatPoly(int c, int e) {
         // TODO: Fill in this method, then remove the RuntimeException
-        throw new RuntimeException("RatPoly constructor is not yet implemented");
+        terms = new ArrayList<>();
+        if(!(c == 0)){
+            terms.add(new RatTerm(new RatNum(c), e));
+        }
+        checkRep();
     }
 
     /**
@@ -123,7 +131,10 @@ public final class RatPoly {
      */
     public int degree() {
         // TODO: Fill in this method, then remove the RuntimeException
-        throw new RuntimeException("RatPoly.degree() is not yet implemented");
+        if(!terms.isEmpty()){
+            return terms.get(0).getExpt();
+        }
+        return 0;
     }
 
     /**
@@ -136,7 +147,14 @@ public final class RatPoly {
      */
     public RatTerm getTerm(int deg) {
         // TODO: Fill in this method, then remove the RuntimeException
-        throw new RuntimeException("RatPoly.getTerm() is not yet implemented");
+        //Invariant: term_0 ... term_{i-1} does not contain a term with deg degree where t_i is the ith term in the polynomial
+        //           and we are looking at the ith term In other words, none of the terms we have looked at so far are of degree deg.
+        for(RatTerm term : terms){
+            if(term.getExpt() == deg){
+                return term;
+            }
+        }
+        return RatTerm.ZERO;
     }
 
     /**
@@ -146,7 +164,15 @@ public final class RatPoly {
      */
     public boolean isNaN() {
         // TODO: Fill in this method, then remove the RuntimeException
-        throw new RuntimeException("RatPoly.isNaN() is not yet implemented");
+        //Invariant: term_0 ... term_{i-1} does not contain a term that is NaN where t_i is the ith term
+        //          in the polynomial and we are looking at the ith term. In other words, none of the terms
+        //          we have looked at so far are NaN.
+        for(RatTerm term : terms){
+            if(term.isNaN()){
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -163,7 +189,12 @@ public final class RatPoly {
     private static void scaleCoeff(List<RatTerm> lst, RatNum scalar) {
         // TODO: Fill in this method as specified, modify it to your liking, or remove it.
         // Do not leave this method as-is. You must either use it somehow or remove it.
-        throw new RuntimeException("RatPoly.scaleCoeff() is not yet implemented");
+        //Invariant: lst = scalar * term_0,...,scalar * term_{i-1}, term_{i},...,term_{size - 1} where term_i is the original
+        //           ith term in the list and we are currently looking at the ith term.
+        for(int i = 0; i < lst.size(); i++){
+            RatTerm term = lst.get(i);
+            lst.set(i, new RatTerm(scalar.mul(term.getCoeff()), term.getExpt()));
+        }
     }
 
     /**
@@ -180,7 +211,13 @@ public final class RatPoly {
     private static void incremExpt(List<RatTerm> lst, int degree) {
         // TODO: Fill in this method as specified, modify it to your liking, or remove it.
         // Do not leave this method as-is. You must either use it somehow or remove it.
-        throw new RuntimeException("RatPoly.incremExpt() is not yet implemented");
+        //Invariant: lst = term_0^{e + degree},...,term_{i-1}^{e + degree}, term_{i},...term_{size - 1} where term_i is the original
+        //           ith term in the list and term_i^{e + degree} is the original ith term in the list with the exponent incremented by degree.
+        //           We are currently looking at the ith term.
+        for(int i = 0; i < lst.size(); i++){
+            RatTerm term = lst.get(i);
+            lst.set(i, new RatTerm(term.getCoeff(), term.getExpt() + degree));
+        }
     }
 
     /**
@@ -206,7 +243,28 @@ public final class RatPoly {
     private static void sortedInsert(List<RatTerm> lst, RatTerm newTerm) {
         // TODO: Fill in this method, then remove the RuntimeException
         // Note: Some of the provided code in this class relies on this method working as-specified.
-        throw new RuntimeException("RatPoly.sortedInsert() is not yet implemented");
+        int i;
+        //Invariant: term_0, ..., term_{i - 1} in lst have exponents greater than newTerm's exponent where
+        //           term_i is the ith term in lst.
+        for(i = 0; i < lst.size(); i++){
+            RatTerm term = lst.get(i);
+            if(term.getExpt() == newTerm.getExpt()){
+                lst.set(i, newTerm.add(term));
+                return;
+            } else if(term.getExpt() < newTerm.getExpt()){
+                break;
+            }
+        }
+        //Invariant: If j is the value of i when this loop is first reached, then lst[j,...,size-1] = newTerm,...,term_{i-2},term_{i},...term_{size-1} where
+        //           term_{i} is the term at the ith index in the original lst.
+        for(; i < lst.size(); i++){
+            RatTerm last = lst.get(i);
+            lst.set(i, newTerm);
+            newTerm = last;
+        }
+        if(!newTerm.isZero()) {
+            lst.add(newTerm);
+        }
     }
 
     /**
@@ -216,7 +274,13 @@ public final class RatPoly {
      */
     public RatPoly negate() {
         // TODO: Fill in this method, then remove the RuntimeException
-        throw new RuntimeException("RatPoly.negate() is not yet implemented");
+        List<RatTerm> lst = new ArrayList<>();
+        //Invariant: lst = [-term_0,...-term_{i-1}] where term_i is the ith term in this's terms. And we are
+        //           currently looking at the ith term.
+        for(RatTerm term: terms){
+            lst.add(term.negate());
+        }
+        return new RatPoly(lst);
     }
 
     /**
@@ -229,7 +293,21 @@ public final class RatPoly {
      */
     public RatPoly add(RatPoly p) {
         // TODO: Fill in this method, then remove the RuntimeException
-        throw new RuntimeException("RatPoly.add() is not yet implemented");
+        List<RatTerm> r = new ArrayList<>(this.terms);
+        //Invariant: The polynomial that r represents = this + p_0 + p_1 +...+ p_{i-1} where p_i is the ith term in p and we are currently looking at the ith term.
+        for (RatTerm term : p.terms){
+            RatTerm common = this.getTerm(term.getExpt());
+            if(!common.isZero()){
+                if(!common.add(term).equals(RatTerm.ZERO)) {
+                    r.set(r.indexOf(common), common.add(term));
+                }else{
+                    r.remove(r.indexOf(common));
+                }
+            }else{
+                sortedInsert(r, term);
+            }
+        }
+        return new RatPoly(r);
     }
 
     /**
@@ -242,7 +320,7 @@ public final class RatPoly {
      */
     public RatPoly sub(RatPoly p) {
         // TODO: Fill in this method, then remove the RuntimeException
-        throw new RuntimeException("RatPoly.sub() is not yet implemented");
+        return this.add(p.negate());
     }
 
     /**
@@ -255,7 +333,16 @@ public final class RatPoly {
      */
     public RatPoly mul(RatPoly p) {
         // TODO: Fill in this method, then remove the RuntimeException
-        throw new RuntimeException("RatPoly.mul() is not yet implemented");
+        RatPoly r = new RatPoly();
+        //Invariant: r = this * [p_0 + ... + p_{i-1}] where p_i is the ith term in p
+        for(RatTerm term : p.terms){
+            List<RatTerm> lst = new ArrayList<>();
+            for(RatTerm term2 : this.terms){
+                sortedInsert(lst, term.mul(term2));
+            }
+            r = r.add(new RatPoly(lst));
+        }
+        return r;
     }
 
     /**
@@ -293,7 +380,21 @@ public final class RatPoly {
      */
     public RatPoly div(RatPoly p) {
         // TODO: Fill in this method, then remove the RuntimeException
-        throw new RuntimeException("RatPoly.div() is not yet implemented");
+        if(p.equals(ZERO) || p.isNaN() || this.isNaN()){
+            return NaN;
+        }
+        RatPoly r = new RatPoly(this.terms);
+        RatPoly q = new RatPoly();
+        RatTerm t = p.terms.get(0);
+        //Invariant: this = q * p + r
+        while(!r.equals(ZERO) && r.degree() >= t.getExpt()){
+            RatTerm d = r.terms.get(0).div(t);
+            RatPoly dPoly = new RatPoly(d);
+            q = q.add(dPoly);
+            RatPoly m = dPoly.mul(p);
+            r = r.sub(m);
+        }
+        return q;
     }
 
     /**
@@ -305,7 +406,19 @@ public final class RatPoly {
      */
     public RatPoly differentiate() {
         // TODO: Fill in this method, then remove the RuntimeException
-        throw new RuntimeException("RatPoly.differentiate() is not yet implemented");
+        if(this.isNaN()){
+            return NaN;
+        }
+        List<RatTerm> lst = new ArrayList<>();
+        //Invariant: lst = [term_0',...,term_{i-1}'] where t_{i}' is the derivative of the ith term in this polynomial and we
+        //           are currently looking at the ith element in the for each loop.
+        for(RatTerm term : this.terms){
+            RatTerm derivative = term.differentiate();
+            if(!derivative.isZero()){
+                lst.add(derivative);
+            }
+        }
+        return new RatPoly(lst);
     }
 
     /**
@@ -321,7 +434,19 @@ public final class RatPoly {
      */
     public RatPoly antiDifferentiate(RatNum integrationConstant) {
         // TODO: Fill in this method, then remove the RuntimeException
-        throw new RuntimeException("RatPoly.antiDifferentiate() unimplemented!");
+        if(this.isNaN()){
+            return NaN;
+        }
+        List<RatTerm> lst = new ArrayList<>();
+        //Invariant: lst = [term_0',...,term_{i-1}'] where t_{i}' is the integral of the ith term in this polynomial and we
+        //           are currently looking at the ith element in the for each loop.
+        for(RatTerm term : this.terms){
+            lst.add(term.antiDifferentiate());
+        }
+        if(!integrationConstant.equals(RatNum.ZERO)) {
+            lst.add(new RatTerm(integrationConstant, 0));
+        }
+        return new RatPoly(lst);
     }
 
     /**
@@ -339,7 +464,8 @@ public final class RatPoly {
      */
     public double integrate(double lowerBound, double upperBound) {
         // TODO: Fill in this method, then remove the RuntimeException
-        throw new RuntimeException("RatPoly.integrate() is not yet implemented");
+        RatPoly integral = antiDifferentiate(RatNum.ZERO);
+        return integral.eval(upperBound) - integral.eval(lowerBound);
     }
 
     /**
@@ -351,7 +477,13 @@ public final class RatPoly {
      */
     public double eval(double d) {
         // TODO: Fill in this method, then remove the RuntimeException
-        throw new RuntimeException("RatPoly.eval() is not yet implemented");
+        double result = 0;
+        //result = [term_0.eval(d) + ... + term_{i - 1}.eval(d)] where t_{i}.eval(d) is the ith term of the polynomial
+        //         evaluated at d and we are currently looking at the ith term.
+        for(RatTerm term : this.terms){
+            result += term.eval(d);
+        }
+        return result;
     }
 
     /**

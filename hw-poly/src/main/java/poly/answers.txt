@@ -16,13 +16,13 @@ r = p*q:
 2. Division Pseudocode
 
 q = u/v:
-    if u or v is Nan or v is 0
+    if u or v is NaN or v is 0:
         then return a NaN polynomial
     set r = u by making a term-by-term copy of all terms in u to r
     q is an initially empty (zero) polynomial
     t = first term in v
     {Inv: u = q * v + r}
-    while the first term in r's degree is greater than or equal to t's degree:
+    while the first term in r's degree is greater than or equal to t's degree and r has at least one term:
         d = the first term in r divided by t
         add d to q (d is equivalent to a single-term polynomial, so we can use poly-poly addition)
         m = d multiplied by v (d is equivalent to a single-term polynomial, so we can use poly-poly multiplication)
@@ -87,12 +87,14 @@ given by the client are the ones that we actually store.
 
 2. Alternate add, sub, mul, div
 The new changes would fail to meet the specifications of the methods because the specifications do not call for
-this to be modified but with the new implementation we would be changing this. Furthermore it would violate the
+this to be modified (no @spec.modifies) but with the new implementation we would be changing this. Furthermore it would violate the
 specifications of the class because RatNum is supposed to be immutable but these changed methods would in
 fact mutate instances of the class.
 
 3. Constructor checkReps
-
+We only need to call checkRep() at the end of the constructors because the object is immutable. None of the methods
+will change the object and therefore none of the methods will make the object violate the representation invariant.
+Since the fields are final, as soon as they are set in the constructor they won't be changed.
 
 
 
@@ -100,19 +102,56 @@ fact mutate instances of the class.
 ###########################################################################
 
 1. Calls to checkRep in RatTerm
-
+I only call checkRep at the end of my constructor. This is because similar to RatNum, RatTerm
+is immutable meaning that none of the methods will change the fields of the object after it is
+constructed. Therefore it won't be the case that the methods will make changes that will cause
+violations to the representation invariant and therefore we do not need to call checkRep.
 
 
 2. Weakened Rep Invariant
+Methods/constructors that must change: add(RatTerm arg), toString(), hashCode(), equals(Object obj), checkRep()
+
+add(RatTerm arg) must change in that in the case where one of the two terms is 0 we must first find which term is
+the non-zero one and then only use that term's exponent in the returned RatTerm. This change would require additional
+if else branches and therefore would make the code harder to understand and less efficient.
+
+toString() must change in that we must add an additional branch for if c is equal to zero in which case we would append
+to our output "0". This change is adding an additional branch to our method which would've been unnecessary if we hadn't
+changed our invariant making our code harder to understand and slightly less efficient.
+
+hashCode() must change so that all instances of the 0 term return the same hash code, this can be done by first identifying
+if the coefficient is 0 and if so then returning a specific value. This change adds more case handling in the method which
+makes the method more complicated and inefficient.
+
+equals(Object obj) must change to handle the case where two instances of zeros are to be compared where they have different
+exponents. This can be done by specifically adding case handling of when coefficient = 0 to return true no matter the exponent.
+This change increases case handling in the method and increases complication and inefficiencies.
+
+checkRep() must change by no longer checking to make sure that expt is 0 when coeff is 0. This reduces the number of conditions
+to be checked whenever the representation invariant is checked which slightly simplifies the code and slightly increases
+efficiency.
+
+Methods/constructors that can change: RatTerm(RatNum c, int e)
+
+RatTerm(RatNum c, int e) can change in that we can remove the if branch that sets expt to 0 if c is 0. This change
+will make the code clearer because the constructor would just simply be setting the fields equal to the parameters and
+slightly more efficient due to reduced code.
 
 
 
 3. Alternate Rep Invariant
+Methods/constructors that must change:RatTerm(RatNum c, int e), checkRep()
+RatTerm(RatNum c, int e) must change so that if the coefficient is NaN, we set the expt field to be 0. This change just means
+adding an extra condition in the if statement which would have little to no change in code clarity/efficiency.
 
+checkRep() must change to check that when the RatTerm is NaN, the expt field is also 0. This just adds one more assertion to
+checkRep() which barely decreases understandability/efficiency of the code.
 
 
 4. Preferred Invariants
-
+I prefer none of the additional invariants because none of them overall increases the understandability or efficiency of the
+code. The changed invariants either increase the complexity of methods or make little to no improvements to the methods making
+them not worth to change to.
 
 
 
