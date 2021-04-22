@@ -176,51 +176,6 @@ public final class RatPoly {
     }
 
     /**
-     * Scales coefficients within 'lst' by 'scalar' (helper procedure).
-     *
-     * @param lst    the RatTerms to be scaled
-     * @param scalar the value by which to scale coefficients in lst
-     * @spec.requires lst, scalar != null
-     * @spec.modifies lst
-     * @spec.effects Forall i s.t. 0 <= i < lst.size(), if lst.get(i) = (C . E) then lst_post.get(i) =
-     * (C*scalar . E)
-     * @see RatTerm regarding (C . E) notation
-     */
-    private static void scaleCoeff(List<RatTerm> lst, RatNum scalar) {
-        // TODO: Fill in this method as specified, modify it to your liking, or remove it.
-        // Do not leave this method as-is. You must either use it somehow or remove it.
-        //Invariant: lst = scalar * term_0,...,scalar * term_{i-1}, term_{i},...,term_{size - 1} where term_i is the original
-        //           ith term in the list and we are currently looking at the ith term.
-        for(int i = 0; i < lst.size(); i++){
-            RatTerm term = lst.get(i);
-            lst.set(i, new RatTerm(scalar.mul(term.getCoeff()), term.getExpt()));
-        }
-    }
-
-    /**
-     * Increments exponents within 'lst' by 'degree' (helper procedure).
-     *
-     * @param lst    the RatTerms whose exponents are to be incremented
-     * @param degree the value by which to increment exponents in lst
-     * @spec.requires lst != null
-     * @spec.modifies lst
-     * @spec.effects Forall i s.t. 0 <= i < lst.size(), if (C . E) = lst.get(i) then lst_post.get(i) =
-     * (C . E+degree)
-     * @see RatTerm regarding (C . E) notation
-     */
-    private static void incremExpt(List<RatTerm> lst, int degree) {
-        // TODO: Fill in this method as specified, modify it to your liking, or remove it.
-        // Do not leave this method as-is. You must either use it somehow or remove it.
-        //Invariant: lst = term_0^{e + degree},...,term_{i-1}^{e + degree}, term_{i},...term_{size - 1} where term_i is the original
-        //           ith term in the list and term_i^{e + degree} is the original ith term in the list with the exponent incremented by degree.
-        //           We are currently looking at the ith term.
-        for(int i = 0; i < lst.size(); i++){
-            RatTerm term = lst.get(i);
-            lst.set(i, new RatTerm(term.getCoeff(), term.getExpt() + degree));
-        }
-    }
-
-    /**
      * Inserts a term into a sorted sequence of terms, preserving the sorted nature of the sequence. 
      * If a term with the given degree already exists, adds their coefficients (helper procedure).
      *
@@ -243,27 +198,23 @@ public final class RatPoly {
     private static void sortedInsert(List<RatTerm> lst, RatTerm newTerm) {
         // TODO: Fill in this method, then remove the RuntimeException
         // Note: Some of the provided code in this class relies on this method working as-specified.
-        int i;
         //Invariant: term_0, ..., term_{i - 1} in lst have exponents greater than newTerm's exponent where
         //           term_i is the ith term in lst.
+        int i;
         for(i = 0; i < lst.size(); i++){
             RatTerm term = lst.get(i);
             if(term.getExpt() == newTerm.getExpt()){
                 lst.set(i, newTerm.add(term));
+                if(lst.get(i).equals(RatTerm.ZERO)){
+                    lst.remove(i);
+                }
                 return;
             } else if(term.getExpt() < newTerm.getExpt()){
                 break;
             }
         }
-        //Invariant: If j is the value of i when this loop is first reached, then lst[j,...,size-1] = newTerm,...,term_{i-2},term_{i},...term_{size-1} where
-        //           term_{i} is the term at the ith index in the original lst.
-        for(; i < lst.size(); i++){
-            RatTerm last = lst.get(i);
-            lst.set(i, newTerm);
-            newTerm = last;
-        }
         if(!newTerm.isZero()) {
-            lst.add(newTerm);
+            lst.add(i, newTerm);
         }
     }
 
@@ -301,7 +252,7 @@ public final class RatPoly {
                 if(!common.add(term).equals(RatTerm.ZERO)) {
                     r.set(r.indexOf(common), common.add(term));
                 }else{
-                    r.remove(r.indexOf(common));
+                    r.remove(common);
                 }
             }else{
                 sortedInsert(r, term);

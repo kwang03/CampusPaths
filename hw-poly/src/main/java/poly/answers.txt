@@ -92,9 +92,10 @@ specifications of the class because RatNum is supposed to be immutable but these
 fact mutate instances of the class.
 
 3. Constructor checkReps
-We only need to call checkRep() at the end of the constructors because the object is immutable. None of the methods
+We only need to call checkRep() at the end of the constructors because the object is immutable. By the spec, none of the methods
 will change the object and therefore none of the methods will make the object violate the representation invariant.
-Since the fields are final, as soon as they are set in the constructor they won't be changed.
+The fields are set in the constructor and never mutated due to the immutability property so we do only need to checkRep when
+constructing.
 
 
 
@@ -149,9 +150,10 @@ checkRep() which barely decreases understandability/efficiency of the code.
 
 
 4. Preferred Invariants
-I prefer none of the additional invariants because none of them overall increases the understandability or efficiency of the
-code. The changed invariants either increase the complexity of methods or make little to no improvements to the methods making
-them not worth to change to.
+I prefer both of the additional invariants because with just a simple check and set in the constructor which does not
+really affect efficiency or clarity we are guaranteed consistent behavior with 0 and NaN. Knowing that the exponent must
+be zero if we are given these values reduces the number of checks/extraneous cases in other methods. Overall, it makes
+writing the code a lot more straightforward and makes it easier to deal with edge cases.
 
 
 
@@ -159,10 +161,19 @@ them not worth to change to.
 ###########################################################################
 
 1. Calls to checkRep in RatPoly
-
+I only called checkRep() at the end of my constructors similar to RatTerm. This is because
+once again, by the spec of the class, RatPoly is an immutable object meaning that after the
+object is created it will not be changed. None of the methods modify the properties of this
+RatPoly so it is only necessary to checkRep() when the object is created to ensure it meets
+the representation invariant.
 
 
 2. Alternate Representation
-
+The advantages of this new representation could be more efficient operations that just focus on
+exponents or coefficients. For example, finding the degree of a RatPoly becomes very easy (just the
+first element in the degree list. Furthermore, we would deal with less objects because we only have a list
+of RatNums instead of RatTerms. However, there are a lot of disadvantages such as increased memory usage by having
+two lists, more complication when trying to access the coeff and expt of a term, and a more difficult representation to understand.
+Because of this, I prefer the list of RatTerms due to the understandability and ease of accessing a term's information.
 
 
