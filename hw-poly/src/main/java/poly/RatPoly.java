@@ -104,7 +104,7 @@ public final class RatPoly {
      */
     public RatPoly(int c, int e) {
         // TODO: Fill in this method, then remove the RuntimeException
-        terms = new ArrayList<>();
+        terms = new ArrayList<RatTerm>();
         if(!(c == 0)){
             terms.add(new RatTerm(new RatNum(c), e));
         }
@@ -225,7 +225,7 @@ public final class RatPoly {
      */
     public RatPoly negate() {
         // TODO: Fill in this method, then remove the RuntimeException
-        List<RatTerm> lst = new ArrayList<>();
+        List<RatTerm> lst = new ArrayList<RatTerm>();
         //Invariant: lst = [-term_0,...-term_{i-1}] where term_i is the ith term in this's terms. And we are
         //           currently looking at the ith term.
         for(RatTerm term: terms){
@@ -244,7 +244,7 @@ public final class RatPoly {
      */
     public RatPoly add(RatPoly p) {
         // TODO: Fill in this method, then remove the RuntimeException
-        List<RatTerm> r = new ArrayList<>(this.terms);
+        List<RatTerm> r = new ArrayList<RatTerm>(this.terms);
         //Invariant: The polynomial that r represents = this + p_0 + p_1 +...+ p_{i-1} where p_i is the ith term in p and we are currently looking at the ith term.
         for (RatTerm term : p.terms){
             RatTerm common = this.getTerm(term.getExpt());
@@ -287,7 +287,7 @@ public final class RatPoly {
         RatPoly r = new RatPoly();
         //Invariant: r = this * [p_0 + ... + p_{i-1}] where p_i is the ith term in p
         for(RatTerm term : p.terms){
-            List<RatTerm> lst = new ArrayList<>();
+            List<RatTerm> lst = new ArrayList<RatTerm>();
             for(RatTerm term2 : this.terms){
                 sortedInsert(lst, term.mul(term2));
             }
@@ -360,7 +360,7 @@ public final class RatPoly {
         if(this.isNaN()){
             return NaN;
         }
-        List<RatTerm> lst = new ArrayList<>();
+        List<RatTerm> lst = new ArrayList<RatTerm>();
         //Invariant: lst = [term_0',...,term_{i-1}'] where t_{i}' is the derivative of the ith term in this polynomial and we
         //           are currently looking at the ith element in the for each loop.
         for(RatTerm term : this.terms){
@@ -388,7 +388,7 @@ public final class RatPoly {
         if(this.isNaN()){
             return NaN;
         }
-        List<RatTerm> lst = new ArrayList<>();
+        List<RatTerm> lst = new ArrayList<RatTerm>();
         //Invariant: lst = [term_0',...,term_{i-1}'] where t_{i}' is the integral of the ith term in this polynomial and we
         //           are currently looking at the ith element in the for each loop.
         for(RatTerm term : this.terms){

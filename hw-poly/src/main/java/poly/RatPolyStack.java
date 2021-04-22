@@ -144,12 +144,14 @@ public final class RatPolyStack implements Iterable<RatPoly> {
         // TODO: Fill in this method, then remove the RuntimeException
         checkRep();
         Stack<RatPoly> removed = new Stack<>();
-        //Invariant: this = S:[p]:T where S.size() = index - i and removed = S' where S'.size() = i and S' is the reverse
-        //           ordering of the top i elements of the original stack.
+        //Invariant: this = S:[p]:T where S.size() = index - i and contains the original elements of the stack without the top i
+        //           and removed = S' where S'.size() = i and S' is the reverse ordering of the top i elements of the original stack.
         for(int i = 0; i < index; i++){
             removed.push(pop());
         }
         RatPoly poly = polys.peek();
+        //Invariant: this = S:[p]:T where s.size() = i and contains the original elements of the stack without the top index - i elements.
+        //           Removed = S' where S'.size() = index - i and is the reverse ordering of the top index - i elements of the original stack.
         for(int i = 0; i < index; i++){
             push(removed.pop());
         }
