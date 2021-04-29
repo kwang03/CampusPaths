@@ -1,0 +1,5 @@
+#Tests the creation/initialization of a graph and the empty behavior of a graph
+created graph myGraph
+
+#Lists the nodes in empty graph
+myGraph contains:

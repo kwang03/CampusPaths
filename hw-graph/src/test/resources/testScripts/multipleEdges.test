@@ -1,0 +1,24 @@
+#Tests the behavior of graph when there are multiple edges between two nodes
+
+#Creates graph
+CreateGraph myGraph
+
+#Adds some nodes to the graph
+AddNode myGraph n1
+AddNode myGraph n2
+
+#Adds edges from n1 to n2 and lists children
+AddEdge myGraph n1 n2 e1
+ListChildren n1
+
+AddEdge myGraph n1 n2 e2
+ListChildren n1
+
+AddEdge myGraph n1 n2 e3
+ListChildren n1
+
+AddEdge myGraph n1 n2 e4
+ListChildren n1
+
+#Checks that n2 has no children
+ListChildren n2

@@ -8,55 +8,74 @@
     ### IntQueue1
 
     Abstraction Function:
-
+    AF(this) = A integer queue entries[0...entries.size()-1] where the 0th element is the least recently added item in the queue and is
+    the next to be removed and entries.size()-1 element is the most recently added and will be last of current elements to be removed.
+    A empty entries list implies a empty integer queue.
 
 
     Representation Invariant:
-
+    entries != null
+    for all elements e in entries from 0 to entries.size() - 1, e != null
 
 
 
     ### IntQueue2
 
     Abstraction Function:
-
+    AF(this) = A integer queue entries[front...front+size-1] if front + size - 1 is less than entries.length
+             = A integer queue entries[front...] + entries[0...size-(entries.length-start)-1] otherwise
 
 
     Representation Invariant:
-
+    entries != null
+    0 <= front < entries.length
+    0 <= size <= entries.length
 
 
 
 2. Group the snapshots of IntQueue2's internal state into groups that have the same abstract state.
-
-
+a, d, g
+b, h
+c, f
+e
 
 
 3. For each signature below, state and justify in 1-2 sentences (per part) whether the method or constructor
 could possibly expose the representation, given the information available. Explain any assumptions you made.
 
     a. `public int solveEquations(int x, int y, int z)`
-
+        Representation exposure is not possible because a primitive type is being returned to the client. Any
+        changes made to the returned int will not be reflected in our class because the int they have is
+        separate from ours.
 
 
     b. `public String[] decode(boolean slowly)`
-
+        Representation exposure is possible because we are returning a object reference to the client. Assuming
+        that the String array being returned is a field in our class, the client now has a reference to our
+        field and is free to change it however they like.
 
 
     c. `private Date myBirthday()`
-
+        Representation exposure is not possible because the method is declared as private. A client outside of this
+        class is unable to call this method and therefore will never have a reference to the Date object that is
+        being returned from this method and can not modify our fields using this method.
 
 
     d. `public String toString()`
-
+        Representation exposure is not possible because we are returning a immutable object to the client. The returned
+        String cannot be mutated so therefore the client cannot change it even with a reference to it.
 
 
     e. `public Iterator<Integer> elements()`
-
+        Representation exposure is possible under the assumption that the returned iterator's underlying collection is
+        a field of our object. With a reference to an iterator on one of our fields, a client can remove elements of
+        our field by removing from the iterator.
 
 
     f. `public Deck(List<Card> cards)`
-
+        Representation exposure is possible because if we directly store the List of Cards as a field, the client now has a
+        reference to one of our fields. In this situation, after creating the Deck object the client can mutate the List of
+        Cards and affect the decks fields.
 
 
 
@@ -68,7 +87,13 @@ interface to a graph. If your design includes multiple classes or interfaces, ex
 included each one; if not, explain whether you considered additional classes and why you decided
 not to include them.
 
-
+The way I decided which operations to include is by considering all of the basic operations that
+a client might want to perform on a graph such as adding nodes, removing nodes, adding edges, removing edges,
+seeing all of the nodes, etc. After listing out all of these operations I simply made
+a public method for each and every one of those operations so at the very least a client can use the graph at a basic level.
+Furthermore, I considered how I could make it so that a client implementing a search algorithm would be as easy as possible and included a few
+methods to do so. I included one public Node subclass just to help with the abstract visualization of a node connected graph. I
+considered having a public Edge subclass but decided against it because it is somewhat confusing to visualize having an edge object.
 
 
 ## Section 3

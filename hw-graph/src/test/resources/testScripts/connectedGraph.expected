@@ -1,0 +1,50 @@
+#Tests the functionality of a fully connected graph
+
+#Creates graph
+created graph myGraph
+
+#Adds some nodes to the graph
+added node n1 to myGraph
+added node n2 to myGraph
+added node n3 to myGraph
+added node n4 to myGraph
+added node n5 to myGraph
+
+#Adds edges so that the graph is fully connected
+
+added edge e11 from n1 to n1 in myGraph
+added edge e12 from n1 to n2 in myGraph
+added edge e13 from n1 to n3 in myGraph
+added edge e14 from n1 to n4 in myGraph
+added edge e15 from n1 to n5 in myGraph
+
+added edge e21 from n2 to n1 in myGraph
+added edge e22 from n2 to n2 in myGraph
+added edge e23 from n2 to n3 in myGraph
+added edge e24 from n2 to n4 in myGraph
+added edge e25 from n2 to n5 in myGraph
+
+added edge e31 from n3 to n1 in myGraph
+added edge e32 from n3 to n2 in myGraph
+added edge e33 from n3 to n3 in myGraph
+added edge e34 from n3 to n4 in myGraph
+added edge e35 from n3 to n5 in myGraph
+
+added edge e41 from n4 to n1 in myGraph
+added edge e42 from n4 to n2 in myGraph
+added edge e43 from n4 to n3 in myGraph
+added edge e44 from n4 to n4 in myGraph
+added edge e45 from n4 to n5 in myGraph
+
+added edge e51 from n5 to n1 in myGraph
+added edge e52 from n5 to n2 in myGraph
+added edge e53 from n5 to n3 in myGraph
+added edge e54 from n5 to n4 in myGraph
+added edge e55 from n5 to n5 in myGraph
+
+#Lists the children of each node
+the children of n1 in myGraph are: n1(e11) n2(e12) n3(e13) n4(e14) n5(e15)
+the children of n2 in myGraph are: n1(e21) n2(e22) n3(e23) n4(e24) n5(e25)
+the children of n3 in myGraph are: n1(e31) n2(e32) n3(e33) n4(e34) n5(e35)
+the children of n4 in myGraph are: n1(e41) n2(e42) n3(e43) n4(e44) n5(e45)
+the children of n5 in myGraph are: n1(e51) n2(e52) n3(e53) n4(e54) n5(e55)

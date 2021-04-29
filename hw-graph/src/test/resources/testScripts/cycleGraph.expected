@@ -1,0 +1,25 @@
+#Tests the behavior of the graph with a cycle
+
+#Create graph
+created graph graphName
+
+#Adds some nodes to the graph
+added node n1 to myGraph
+added node n2 to myGraph
+added node n3 to myGraph
+added node n4 to myGraph
+added node n5 to myGraph
+
+#Adds edges between nodes to create a cycle
+added edge e23 from n2 to n3 in myGraph
+added edge e35 from n3 to n5 in myGraph
+added edge e54 from n5 to n4 in myGraph
+added edge e41 from n4 to n1 in myGraph
+added edge e12 from n1 to n2 in myGraph
+
+#Lists the children of nodes
+the children of n1 in myGraph are: n2(e12)
+the children of n2 in myGraph are: n3(e23)
+the children of n3 in myGraph are: n5(e35)
+the children of n4 in myGraph are: n1(e41)
+the children of n5 in myGraph are: n4(e54)

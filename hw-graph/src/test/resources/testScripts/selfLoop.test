@@ -1,0 +1,26 @@
+#Tests functionality of self loops in a graph
+
+#Create graph
+CreateGraph myGraph
+
+#Adds some nodes to the graph
+AddNode myGraph n1
+AddNode myGraph n2
+AddNode myGraph n3
+AddNode myGraph n4
+AddNode myGraph n5
+
+#Independent self loop node
+AddEdge myGraph n1 n1 e11
+ListChildren myGraph n1
+
+#Self loop node with edge to another node
+AddEdge myGraph n2 n2 e22
+AddEdge myGraph n2 n3 e23
+ListChildren myGraph n2
+
+#Self loop with another incoming edge
+AddEdge myGraph n4 n4 e44
+AddEdge myGraph n5 n4 e54
+ListChildren myGraph n4
+ListChildren myGraph n5

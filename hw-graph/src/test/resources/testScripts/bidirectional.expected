@@ -1,0 +1,22 @@
+#Tests the functionality of having bidirectional edges in our graph
+
+#Create graph
+created graph myGraph
+
+#Adds some nodes to the graph
+added node n1 to myGraph
+added node n2 to myGraph
+added node n3 to myGraph
+added node n4 to myGraph
+
+#Adds a bidirectional edge between two nodes with the same label
+added edge e from n1 to n2 in myGraph
+added edge e from n2 to n1 in myGraph
+the children of n1 in myGraph are: n2(e)
+the children of n2 in myGraph are: n1(e)
+
+#Adds a bidirectional edge between two nodes with different labels
+added edge e34 from n3 to n4 in myGraph
+added edge e43 from n4 to n3 in myGraph
+the children of n3 in myGraph are: n4(e34)
+the children of n4 in myGraph are: n3(e43)

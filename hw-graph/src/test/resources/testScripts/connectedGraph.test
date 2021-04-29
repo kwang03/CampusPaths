@@ -1,0 +1,50 @@
+#Tests the functionality of a fully connected graph
+
+#Creates graph
+CreateGraph myGraph
+
+#Adds some nodes to the graph
+AddNode myGraph n1
+AddNode myGraph n2
+AddNode myGraph n3
+AddNode myGraph n4
+AddNode myGraph n5
+
+#Adds edges so that the graph is fully connected
+
+AddEdge myGraph n1 n1 e11
+AddEdge myGraph n1 n2 e12
+AddEdge myGraph n1 n3 e13
+AddEdge myGraph n1 n4 e14
+AddEdge myGraph n1 n5 e15
+
+AddEdge myGraph n2 n1 e21
+AddEdge myGraph n2 n2 e22
+AddEdge myGraph n2 n3 e23
+AddEdge myGraph n2 n4 e24
+AddEdge myGraph n2 n5 e25
+
+AddEdge myGraph n3 n1 e31
+AddEdge myGraph n3 n2 e32
+AddEdge myGraph n3 n3 e33
+AddEdge myGraph n3 n4 e34
+AddEdge myGraph n3 n5 e35
+
+AddEdge myGraph n4 n1 e41
+AddEdge myGraph n4 n2 e42
+AddEdge myGraph n4 n3 e43
+AddEdge myGraph n4 n4 e44
+AddEdge myGraph n4 n5 e45
+
+AddEdge myGraph n5 n1 e51
+AddEdge myGraph n5 n2 e52
+AddEdge myGraph n5 n3 e53
+AddEdge myGraph n5 n4 e54
+AddEdge myGraph n5 n5 e55
+
+#Lists the children of each node
+ListChildren myGraph n1
+ListChildren myGraph n2
+ListChildren myGraph n3
+ListChildren myGraph n4
+ListChildren myGraph n5

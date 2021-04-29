@@ -1,0 +1,20 @@
+#Tests the ability to add nodes to a graph
+
+#Create graph
+created graph myGraph
+
+#Adds nodes and then lists the nodes in the graph
+added node n1 to myGraph
+myGraph contains: n1
+
+added node n2 to myGraph
+myGraph contains: n1 n2
+
+added node n3 to myGraph
+myGraph contains: n1 n2 n3
+
+added node n4 to myGraph
+myGraph contains: n1 n2 n3 n4
+
+added node n5 to myGraph
+myGraph contains: n1 n2 n3 n4 n5

@@ -1,0 +1,26 @@
+#Tests functionality of self loops in a graph
+
+#Create graph
+created graph myGraph
+
+#Adds some nodes to the graph
+added node n1 to myGraph
+added node n2 to myGraph
+added node n3 to myGraph
+added node n4 to myGraph
+added node n5 to myGraph
+
+#Independent self loop node
+added edge e11 from n1 to n1 in myGraph
+the children of n1 in myGraph are: n1(e11)
+
+#Self loop node with edge to another node
+added edge e22 from n2 to n2 in myGraph
+added edge e23 from n2 to n3 in myGraph
+the children of n2 in myGraph are: n2(e22) n3(e23)
+
+#Self loop with another incoming edge
+added edge e44 from n4 to n4 in myGraph
+added edge e54 from n5 to n4 in myGraph
+the children of n4 in myGraph are: n4(e44)
+the children of n5 in myGraph are: n4(e54)
