@@ -90,45 +90,108 @@ public class graphTest {
         return twoEdgesTwoNodes;
     }
 
+    private DirectedLabeledGraph selfLoop(){
+        DirectedLabeledGraph selfLoop = new DirectedLabeledGraph();
+        selfLoop.addNode(one);
+        selfLoop.addEdge("e1", one, one);
+        return selfLoop;
+    }
+
     //Equals and Hashcode Tests
     @Test
     public void equalsTest(){
-        assertEquals(empty(), empty());
-        assertEquals(oneNode(), oneNode());
-        assertEquals(twoNodes(), twoNodes());
-        assertEquals(getOneEdgeTwoNodes(), getOneEdgeTwoNodes());
-        assertEquals(getTwoEdgesThreeNodes(), getTwoEdgesThreeNodes());
-        assertNotEquals(getOneEdgeTwoNodes(),getTwoEdgesThreeNodes());
-        assertNotEquals(oneNode(),twoNodes());
-        assertNotEquals(empty(),oneNode());
-        assertNotEquals(oneNode(), null);
+        //Empty graph test
+        DirectedLabeledGraph g = new DirectedLabeledGraph();
+        assertTrue(g.equals(g));
+        assertTrue(g.equals(empty()));
+        assertTrue(empty().equals(g));
+        assertFalse(g.equals(null));
+
+        //One node test
+        g.addNode(one);
+        assertTrue(g.equals(g));
+        assertTrue(g.equals(oneNode()));
+        assertTrue(oneNode().equals(g));
+        assertFalse(g.equals(null));
+
+        //Two node test
+        g.addNode(two);
+        assertTrue(g.equals(g));
+        assertTrue(g.equals(twoNodes()));
+        assertTrue(twoNodes().equals(g));
+        assertFalse(g.equals(null));
+
+        //Two node one edge test
+        g.addEdge("e1", one, two);
+        assertTrue(g.equals(g));
+        assertTrue(g.equals(getOneEdgeTwoNodes()));
+        assertTrue(getOneEdgeTwoNodes().equals(g));
+        assertFalse(g.equals(null));
+
+        //Two edge three node test
+        g.addNode(three);
+        g.addEdge("e2", two, three);
+        assertTrue(g.equals(g));
+        assertTrue(g.equals(getTwoEdgesThreeNodes()));
+        assertTrue(getTwoEdgesThreeNodes().equals(g));
+        assertFalse(g.equals(null));
     }
 
     @Test
     public void hashCodeTest(){
-        assertEquals(empty().hashCode(), empty().hashCode());
-        assertEquals(oneNode().hashCode(), oneNode().hashCode());
-        assertEquals(twoNodes().hashCode(), twoNodes().hashCode());
-        assertEquals(getOneEdgeTwoNodes().hashCode(), getOneEdgeTwoNodes().hashCode());
-        assertEquals(getTwoEdgesThreeNodes().hashCode(), getTwoEdgesThreeNodes().hashCode());
+        //Empty graph tests
+        DirectedLabeledGraph g = new DirectedLabeledGraph();
+        assertTrue(g.hashCode() == g.hashCode());
+        assertTrue(g.hashCode() == empty().hashCode());
+
+        //One node test
+        g.addNode(one);
+        assertTrue(g.hashCode() == g.hashCode());
+        assertTrue(g.hashCode() == oneNode().hashCode());
+
+        //two node test
+        g.addNode(two);
+        assertTrue(g.hashCode() == g.hashCode());
+        assertTrue(g.hashCode() == twoNodes().hashCode());
+
+        //Two node one edge test
+        g.addEdge("e1",one,two);
+        assertTrue(g.hashCode() == g.hashCode());
+        assertTrue(g.hashCode() == getOneEdgeTwoNodes().hashCode());
+
+        //two edge three node test
+        g.addNode(three);
+        g.addEdge("e2",two,three);
+        assertTrue(g.hashCode() == g.hashCode());
+        assertTrue(g.hashCode() == getTwoEdgesThreeNodes().hashCode());
     }
 
     @Test
     public void equalsNodeTest(){
-        assertEquals(one, one);
-        assertEquals(two, two);
-        assertEquals(three, three);
-        assertNotEquals(one, two);
-        assertNotEquals(one, three);
-        assertNotEquals(two, three);
-        assertNotEquals(one, null);
+        //"One" node test
+        DirectedLabeledGraph.Node node = new DirectedLabeledGraph.Node("one");
+        assertTrue(node.equals(one));
+        assertTrue(node.equals(node));
+        assertFalse(node.equals(null));
+
+        //"Two" node test
+        node = new DirectedLabeledGraph.Node("two");
+        assertTrue(node.equals(two));
+        assertTrue(node.equals(node));
+        assertFalse(node.equals(null));
     }
 
     @Test
     public void hashCodeNodeTest(){
-        assertEquals(one.hashCode(),one.hashCode());
-        assertEquals(two.hashCode(),two.hashCode());
-        assertEquals(three.hashCode(),three.hashCode());
+        //"One" node test
+        DirectedLabeledGraph.Node node = new DirectedLabeledGraph.Node("one");
+        assertTrue(node.hashCode() == node.hashCode());
+        assertTrue(node.hashCode() == one.hashCode());
+
+        //"Two" node test
+        node = new DirectedLabeledGraph.Node("two");
+        assertTrue(node.hashCode() == node.hashCode());
+        assertTrue(node.hashCode() == two.hashCode());
     }
 
     //Remove Node Tests
@@ -194,6 +257,11 @@ public class graphTest {
         assertEquals(g, oneEdgeThreeNodes());
         g.removeEdge("e1", one, two);
         assertEquals(g, threeNodes());
+
+        //Test self loop
+        g = selfLoop();
+        g.removeEdge("e1",one,one);
+        assertEquals(g, oneNode());
 
         //Test return false if edge doesnt exist
         assertFalse(g.removeEdge("e3", one, two));
@@ -268,6 +336,9 @@ public class graphTest {
         g = getOneEdgeTwoNodes();
         s.add("e1");
         assertEquals(g.getEdgesBetween(one,two), s);
+        //Test self loop
+        g = selfLoop();
+        assertEquals(g.getEdgesBetween(one, one), s);
 
         //Test two edges in between
         g = twoEdgesTwoNodes();

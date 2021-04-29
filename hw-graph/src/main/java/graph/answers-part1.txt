@@ -103,5 +103,19 @@ and node objects.
 What was your testing strategy for this assignment? How do your script tests and JUnit tests
 differ from each other (if they do), and why?
 
+My testing strategy for this assignment was to find revealing subdomains and to have at least one
+test in each of those subdomains. I reflected upon which graph state/operation combos might behave
+differently from each other and designed my tests accordingly. For example, I pinpointed some special
+graph states such as an empty graph, a unconnected graph, a fully connected graph, a graph with a self loop,
+a graph with a cycle, a graph with a bidirectional edge, a graph with two or more edges between two nodes, etc.
+With each of these graph states, I wrote tests ensuring that the graphs behave as expected. Furthermore, I
+reexamined my specifications and tested each behavior that I guaranteed given the precondition.
 
+I wrote my script tests first and tested all that I could before moving onto JUnit. My script tests were focused
+on ensuring all of the basic graph operations worked properly in all of the graph states. These basic operations
+are essential to other operations working properly so I was sure to test as many scenarios as possible. Then,
+for the rest of the operations in my spec that I was unable to test in script tests I did so in JUnit. I took
+each method and wrote a test for it, testing each behavior guaranteed by the spec on a set of basic graph states.
+I did not specifically test all of the special graph states in my JUnit because if the script tests had passed, the
+basic graph states would catch any issues that would be present in the special graphs.
 

@@ -1,0 +1,21 @@
+#Tests the behavior of a graph with just one edge between two nodes
+
+#Creates graph
+CreateGraph myGraph
+
+#Adds nodes
+AddNode myGraph n1
+AddNode myGraph n2
+AddNode myGraph n3
+
+#Adds edge
+AddEdge myGraph n1 n2 e12
+AddEdge myGraph n2 n3 e23
+
+#Lists children
+ListChildren myGraph n1
+ListChildren myGraph n2
+ListChildren myGraph n3
+
+#Lists Nodes
+ListNodes myGraph
