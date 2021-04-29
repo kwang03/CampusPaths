@@ -1,0 +1,13 @@
+#Tests how a graph with one node behaves
+
+#Creates graph
+CreateGraph myGraph
+
+#Adds node
+AddNode myGraph n1
+
+#Lists children
+ListChildren myGraph n1
+
+#Lists nodes
+ListNodes myGraph

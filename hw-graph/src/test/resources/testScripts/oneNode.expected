@@ -1,0 +1,13 @@
+#Tests how a graph with one node behaves
+
+#Creates graph
+created graph myGraph
+
+#Adds node
+added node n1 to myGraph
+
+#Lists children
+the children of n1 in myGraph are:
+
+#Lists nodes
+myGraph contains: n1

@@ -14,7 +14,7 @@ import java.util.*;
  * <p>Abstract Invariant:
  * Two of the same node cannot be in the graph and each edge with the same parent and child must have different labels</p>
  */
-public class DirectedLabeledGraph {
+public class DirectedLabeledGraph implements Iterable<DirectedLabeledGraph.Node>{
 
     /**Creates a new DirectedLabeledGraph with no nodes or edges
      * @spec.effects Constructs a new DirectedLabeledGraph with no nodes or edges
@@ -147,7 +147,7 @@ public class DirectedLabeledGraph {
      * @param source The node that the edges in the returned set are coming out of
      * @param destination The node that the edges in the returned set go into
      * @return A set of the labels of the edges between source and destination (empty set if no edges between)
-     * @spec.requires source and destination are not null
+     * @spec.requires source and destination are not null, source and destination both exist in the graph
      */
     public Set<String> getEdgesBetween(Node source, Node destination){
         throw new UnsupportedOperationException();
@@ -164,13 +164,33 @@ public class DirectedLabeledGraph {
     }
 
     /**
+     * Standard hashCode function.
+     *
+     * @return an int that all objects equal to this will also return
+     */
+    public int hashCode() {
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Standard equality operation.
+     *
+     * @param obj the object to be compared for equality
+     * @return true if and only if 'obj' is an instance of a DirectedLabeledGraph and 'this' and 'obj' represent
+     * the same graph.
+     */
+    public boolean equals(Object obj) {
+        throw new UnsupportedOperationException();
+    }
+
+    /**
      * <b>Node</b> represents an immutable single node in a DirectedLabeledGraph
      *
      * <p>Specification fields:
      * @spec.specfield label : String //The label or name of the node</p>
      *
      */
-    public class Node{
+    public static class Node{
 
         /**Constructs a node with label "label"
          *
@@ -179,6 +199,26 @@ public class DirectedLabeledGraph {
          * @spec.effects creates a new Node with "label" as its label
          */
         public Node(String label){
+            throw new UnsupportedOperationException();
+        }
+
+        /**
+         * Standard hashCode function.
+         *
+         * @return an int that all objects equal to this will also return
+         */
+        public int hashCode() {
+            throw new UnsupportedOperationException();
+        }
+
+        /**
+         * Standard equality operation.
+         *
+         * @param obj the object to be compared for equality
+         * @return true if and only if 'obj' is an instance of a Node and 'this' and 'obj' represent
+         * the same node.
+         */
+        public boolean equals(Object obj) {
             throw new UnsupportedOperationException();
         }
     }

@@ -1,0 +1,18 @@
+#Tests the behavior of a graph with just one edge between two nodes
+
+#Creates graph
+created graph myGraph
+
+#Adds nodes
+added node n1 to myGraph
+added node n2 to myGraph
+
+#Adds edge
+added edge e12 from n1 to n2 in myGraph
+
+#Lists children
+the children of n1 in myGraph are: n2(e12)
+the children of n2 in myGraph are:
+
+#Lists Nodes
+myGraph contains: n1 n2
