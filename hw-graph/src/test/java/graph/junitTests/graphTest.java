@@ -142,6 +142,10 @@ public class graphTest {
         g = twoNodes();
         g.removeNode(two);
         assertEquals(g, oneNode());
+
+        //Test return is false if node not removed
+        assertFalse(g.removeNode(three));
+
         //Remove from two nodes one edge
         g = getOneEdgeTwoNodes();
         g.removeNode(two);
@@ -150,6 +154,8 @@ public class graphTest {
         g = getTwoEdgesThreeNodes();
         g.removeNode(three);
         assertEquals(g, twoNodes());
+
+
     }
 
     @Test
@@ -170,6 +176,9 @@ public class graphTest {
         g = getTwoEdgesThreeNodes();
         g.removeNode("three");
         assertEquals(g, twoNodes());
+
+        //Test return is false if node not removed
+        assertFalse(g.removeNode("five"));
     }
 
     //Remove Edge Tests
@@ -185,6 +194,9 @@ public class graphTest {
         assertEquals(g, oneEdgeThreeNodes());
         g.removeEdge("e1", one, two);
         assertEquals(g, threeNodes());
+
+        //Test return false if edge doesnt exist
+        assertFalse(g.removeEdge("e3", one, two));
     }
 
     //Clear test
