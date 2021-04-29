@@ -93,7 +93,8 @@ seeing all of the nodes, etc. After listing out all of these operations I simply
 a public method for each and every one of those operations so at the very least a client can use the graph at a basic level.
 Furthermore, I considered how I could make it so that a client implementing a search algorithm would be as easy as possible and included a few
 methods to do so. I included one public Node subclass just to help with the abstract visualization of a node connected graph. I
-considered having a public Edge subclass but decided against it because it is somewhat confusing to visualize having an edge object.
+considered having a public Edge subclass but decided against it because in my opinion it is somewhat confusing to visualize having edge objects
+and node objects.
 
 
 ## Section 3

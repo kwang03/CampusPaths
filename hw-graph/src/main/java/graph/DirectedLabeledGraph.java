@@ -168,6 +168,7 @@ public class DirectedLabeledGraph implements Iterable<DirectedLabeledGraph.Node>
      *
      * @return an int that all objects equal to this will also return
      */
+    @Override
     public int hashCode() {
         throw new UnsupportedOperationException();
     }
@@ -179,6 +180,7 @@ public class DirectedLabeledGraph implements Iterable<DirectedLabeledGraph.Node>
      * @return true if and only if 'obj' is an instance of a DirectedLabeledGraph and 'this' and 'obj' represent
      * the same graph.
      */
+    @Override
     public boolean equals(Object obj) {
         throw new UnsupportedOperationException();
     }
