@@ -26,7 +26,8 @@ public class GraphTest {
     private DirectedLabeledGraph.Node two = new DirectedLabeledGraph.Node("two");
     private DirectedLabeledGraph.Node three = new DirectedLabeledGraph.Node("three");
     //@BeforeClass
-    //Some basic graph examples without edges
+
+    //Some methods to get basic graph examples without edges
     private  DirectedLabeledGraph empty(){
         return new DirectedLabeledGraph();
     }
@@ -44,7 +45,7 @@ public class GraphTest {
         return twoNodes;
     }
 
-    //Some basic graph examples with edges
+    //Some methods to get basic graph examples with edges
     private DirectedLabeledGraph getOneEdgeTwoNodes(){
         DirectedLabeledGraph oneEdgeTwoNodes = new DirectedLabeledGraph();
         oneEdgeTwoNodes.addNode(one);
@@ -63,7 +64,7 @@ public class GraphTest {
         return twoEdgesThreeNodes;
     }
 
-    //Helper function to get special graph cases
+    //Helper functions to get special graph cases
     private DirectedLabeledGraph oneEdgeThreeNodes(){
         DirectedLabeledGraph oneEdgeThreeNodes = new DirectedLabeledGraph();
         oneEdgeThreeNodes.addNode(one);
@@ -326,6 +327,8 @@ public class GraphTest {
         g = selfLoop();
         g.removeEdge("e1",one,one);
         assertEquals(g, oneNode());
+        assertFalse(g.removeEdge("fake", one, one));
+        assertEquals(oneNode(),g);
     }
 
     //Clear test

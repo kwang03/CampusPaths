@@ -1,0 +1,11 @@
+#Tests behavior of adding a node that already exists in the graph
+
+#Create graph
+created graph myGraph
+
+#Adds nodes and then lists the nodes in the graph
+added node n1 to myGraph
+myGraph contains: n1
+
+added node n1 to myGraph
+myGraph contains: n1

@@ -56,7 +56,7 @@ to check that null is returned in that case.
 For the remove node and remove edge tests, I had to add tests to ensure that after attempting to remove a node/edge that does not exist not only
 does it return false but also the graph is left unchanged.
 
-In the script tests, I added some tests to test that adding a node to a graph that already existed results in no changes.
+In the script tests, I added a new test to test that adding a node to a graph that already existed results in no changes.
 
 Also in the script tests for addEdge, I added tests to check the correct functionality for adding a edge where one or both
 nodes do not exist and that adding a edge that already exists results in no changes.
