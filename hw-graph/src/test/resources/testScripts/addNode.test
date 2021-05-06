@@ -18,3 +18,6 @@ ListNodes myGraph
 
 AddNode myGraph n5
 ListNodes myGraph
+
+AddNode myGraph n5
+ListNodes myGraph

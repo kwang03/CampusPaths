@@ -1,0 +1,14 @@
+#Tests the behavior of adding a edge where nodes do not exist
+
+#Creates graph
+CreateGraph myGraph
+
+#Adds edge
+AddEdge myGraph n1 n2 e12
+
+#Lists children
+ListChildren myGraph n1
+ListChildren myGraph n2
+
+#Lists Nodes
+ListNodes myGraph

@@ -12,11 +12,11 @@ AddNode myGraph n4
 #Adds a bidirectional edge between two nodes with the same label
 AddEdge myGraph n1 n2 e
 AddEdge myGraph n2 n1 e
-ListChildren n1
-ListChildren n2
+ListChildren myGraph n1
+ListChildren myGraph n2
 
 #Adds a bidirectional edge between two nodes with different labels
 AddEdge myGraph n3 n4 e34
 AddEdge myGraph n4 n3 e43
-ListChildren n3
-ListChildren n4
+ListChildren myGraph n3
+ListChildren myGraph n4

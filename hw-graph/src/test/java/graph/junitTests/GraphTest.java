@@ -9,7 +9,6 @@ import org.junit.rules.Timeout;
 
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.NoSuchElementException;
 
 import static org.junit.Assert.*;
 
@@ -20,14 +19,15 @@ import static org.junit.Assert.*;
  *
  * <p>
  */
-public class graphTest {
+public class GraphTest {
+    @Rule public Timeout globalTimeout = Timeout.seconds(10); // 10 seconds max per method tested
     //Some nodes to use for testing
     private DirectedLabeledGraph.Node one = new DirectedLabeledGraph.Node("one");
     private DirectedLabeledGraph.Node two = new DirectedLabeledGraph.Node("two");
     private DirectedLabeledGraph.Node three = new DirectedLabeledGraph.Node("three");
-    @BeforeClass
+    //@BeforeClass
     //Some basic graph examples without edges
-    private DirectedLabeledGraph empty(){
+    private  DirectedLabeledGraph empty(){
         return new DirectedLabeledGraph();
     }
 
@@ -194,6 +194,36 @@ public class graphTest {
         assertTrue(node.hashCode() == two.hashCode());
     }
 
+    @Test
+    public void equalsEdgeTest(){
+        //Edge test
+        DirectedLabeledGraph.Edge e1 = new DirectedLabeledGraph.Edge("e1", one);
+        DirectedLabeledGraph.Edge e2 = new DirectedLabeledGraph.Edge("e1", one);
+        DirectedLabeledGraph.Edge e3 = new DirectedLabeledGraph.Edge("e2",one);
+        DirectedLabeledGraph.Edge e4 = new DirectedLabeledGraph.Edge("e1",two);
+        //Equality test
+        assertTrue(e1.equals(e2));
+        assertTrue(e2.equals(e1));
+        assertTrue(e1.equals(e1));
+        assertFalse(e1.equals(null));
+
+        //Inequality test
+        assertFalse(e3.equals(e1));
+        assertFalse(e1.equals(e3));
+
+        assertFalse(e4.equals(e1));
+        assertFalse(e1.equals(e4));
+    }
+
+    @Test
+    public void hashCodeEdgeTest(){
+        //"One" node test
+        DirectedLabeledGraph.Edge e1 = new DirectedLabeledGraph.Edge("e1", one);
+        DirectedLabeledGraph.Edge e2 = new DirectedLabeledGraph.Edge("e1", one);
+        assertTrue(e1.hashCode() == e1.hashCode());
+        assertTrue(e1.hashCode() == e2.hashCode());
+    }
+
     //Remove Node Tests
     @Test
     public void testRemoveNodeNodeArg(){
@@ -201,24 +231,33 @@ public class graphTest {
         DirectedLabeledGraph g = oneNode();
         g.removeNode(one);
         assertEquals(g, empty());
+        //Test return is false if node not removed
+        assertFalse(g.removeNode(three));
+        assertEquals(empty(), g);
+
         //Remove from two node graph
         g = twoNodes();
         g.removeNode(two);
         assertEquals(g, oneNode());
-
         //Test return is false if node not removed
         assertFalse(g.removeNode(three));
+        assertEquals(oneNode(), g);
 
         //Remove from two nodes one edge
         g = getOneEdgeTwoNodes();
         g.removeNode(two);
         assertEquals(g, oneNode());
+        //Test return is false if node not removed
+        assertFalse(g.removeNode(three));
+        assertEquals(oneNode(), g);
+
         //Remove from three nodes two edges
         g = getTwoEdgesThreeNodes();
         g.removeNode(three);
-        assertEquals(g, twoNodes());
-
-
+        assertEquals(g, getOneEdgeTwoNodes());
+        //Test return is false if node not removed
+        assertFalse(g.removeNode(three));
+        assertEquals(getOneEdgeTwoNodes(), g);
     }
 
     @Test
@@ -227,21 +266,35 @@ public class graphTest {
         DirectedLabeledGraph g = oneNode();
         g.removeNode("one");
         assertEquals(g, empty());
+        //Test return is false if node not removed
+        assertFalse(g.removeNode("fake"));
+        assertEquals(empty(), g);
+
         //Remove from two node graph
         g = twoNodes();
         g.removeNode("two");
         assertEquals(g, oneNode());
+        //Test return is false if node not removed
+        assertFalse(g.removeNode("fake"));
+        assertEquals(oneNode(), g);
+
         //Remove from two nodes one edge
         g = getOneEdgeTwoNodes();
         g.removeNode("two");
         assertEquals(g, oneNode());
+        //Test return is false if node not removed
+        assertFalse(g.removeNode("fake"));
+        assertEquals(oneNode(), g);
+
         //Remove from three nodes two edges
         g = getTwoEdgesThreeNodes();
         g.removeNode("three");
-        assertEquals(g, twoNodes());
-
+        assertEquals(g, getOneEdgeTwoNodes());
         //Test return is false if node not removed
-        assertFalse(g.removeNode("five"));
+        assertFalse(g.removeNode("fake"));
+        assertEquals(getOneEdgeTwoNodes(), g);
+
+
     }
 
     //Remove Edge Tests
@@ -251,20 +304,28 @@ public class graphTest {
         DirectedLabeledGraph g = getOneEdgeTwoNodes();
         g.removeEdge("e1", one, two);
         assertEquals(g, twoNodes());
+        //Test return false if edge doesnt exist
+        assertFalse(g.removeEdge("fake", one, two));
+        assertEquals(g, twoNodes());
+
         //Remove edges from three nodes two edges
         g = getTwoEdgesThreeNodes();
         g.removeEdge("e2", two, three);
         assertEquals(g, oneEdgeThreeNodes());
+        //Test return false if edge doesnt exist
+        assertFalse(g.removeEdge("fake", one, two));
+        assertEquals(g, oneEdgeThreeNodes());
+        //Remove next edge
         g.removeEdge("e1", one, two);
+        assertEquals(g, threeNodes());
+        //Test return false if edge doesnt exist
+        assertFalse(g.removeEdge("fake", one, two));
         assertEquals(g, threeNodes());
 
         //Test self loop
         g = selfLoop();
         g.removeEdge("e1",one,one);
         assertEquals(g, oneNode());
-
-        //Test return false if edge doesnt exist
-        assertFalse(g.removeEdge("e3", one, two));
     }
 
     //Clear test
@@ -301,26 +362,23 @@ public class graphTest {
         //Test one node graph
         DirectedLabeledGraph g = oneNode();
         assertEquals(g.getNodeByName("one"), one);
+        assertNull(g.getNodeByName("fake"));
         //Test two node graph
         g = twoNodes();
         assertEquals(g.getNodeByName("one"),one);
         assertEquals(g.getNodeByName("two"),two);
+        assertNull(g.getNodeByName("fake"));
         //Test graph with one edge two nodes
         g = getOneEdgeTwoNodes();
         assertEquals(g.getNodeByName("one"),one);
         assertEquals(g.getNodeByName("two"),two);
+        assertNull(g.getNodeByName("fake"));
         //Test graph with two edges three nodes
         g = getTwoEdgesThreeNodes();
         assertEquals(g.getNodeByName("one"),one);
         assertEquals(g.getNodeByName("two"),two);
         assertEquals(g.getNodeByName("three"),three);
-
-    }
-
-    @Test(expected=NoSuchElementException.class)
-    public void getNodeByNameExceptionTest(){
-        DirectedLabeledGraph g = empty();
-        g.getNodeByName("one");
+        assertNull(g.getNodeByName("fake"));
     }
 
 
@@ -346,6 +404,25 @@ public class graphTest {
         assertEquals(g.getEdgesBetween(one, two), s);
     }
 
+    //Get Edges test
+    @Test
+    public void getEdgesTest(){
+        //No edges test
+        DirectedLabeledGraph g = oneNode();
+        HashSet<DirectedLabeledGraph.Edge> s = new HashSet<>();
+        assertEquals(g.getEdges(one), s);
+
+        //One edge test
+        g = getOneEdgeTwoNodes();
+        s.add(new DirectedLabeledGraph.Edge("e1", two));
+        assertEquals(s, g.getEdges(one));
+
+        //Two edge test
+        g = twoEdgesTwoNodes();
+        s.add(new DirectedLabeledGraph.Edge("e2",two));
+        assertEquals(s, g.getEdges(one));
+    }
+
 
     //Iterator Test
     @Test
@@ -363,7 +440,7 @@ public class graphTest {
         expected.add(one);
         actual = new HashSet<>();
         for (DirectedLabeledGraph.Node node : g) {
-            expected.add(node);
+            actual.add(node);
         }
         assertEquals(actual,expected);
 
@@ -373,7 +450,7 @@ public class graphTest {
         expected.add(two);
         actual = new HashSet<>();
         for (DirectedLabeledGraph.Node node : g) {
-            expected.add(node);
+            actual.add(node);
         }
         assertEquals(actual,expected);
 
@@ -383,7 +460,7 @@ public class graphTest {
         expected.add(two);
         actual = new HashSet<>();
         for (DirectedLabeledGraph.Node node : g) {
-            expected.add(node);
+            actual.add(node);
         }
         assertEquals(actual,expected);
 
@@ -394,7 +471,7 @@ public class graphTest {
         expected.add(three);
         actual = new HashSet<>();
         for (DirectedLabeledGraph.Node node : g) {
-            expected.add(node);
+            actual.add(node);
         }
         assertEquals(actual,expected);
     }

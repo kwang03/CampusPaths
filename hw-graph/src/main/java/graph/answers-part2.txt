@@ -16,13 +16,27 @@ A few examples of possible Graph representations:
 representations listed above (for example, in terms of runtime complexity, space
 complexity, or ease of implementation).
 
+A collection of edges: An advantage is that the representation is very simple being just a collection of edges so that there is
+                       less to maintain throughout our class. A disadvantage is that there is no way to represent nodes without edges
+                       since we are not tracking the nodes of the graph.
 
+Adjacency list: An advantage is that we can easily iterate through all of the children nodes of a specific node since we store a list of
+                its outgoing edges. A disadvantage is that it is difficult to find whether or not there exists a edge between two specific
+                nodes since we have to iterate through all of the first nodes edges.
+
+Adjacency matrix: An advantage is fast lookup in terms of finding edges(s) between nodes because we simply have to look for the pair (A,B).
+                  A disadvantage is high space requirements, a adjacency matrix must represent each and every combination of
+                  pairs of nodes giving O(N^2) space complexity where N is the number of nodes (bad for sparse graphs).
 
 
 2. In two to three sentences, describe the representation you chose and explain why you
 chose it. If you chose to use a different representation than one of the three we described
 above, be sure to list its advantages and disadvantages, too.
 
+I chose to represent my graph as an adjacency list because the advantage of being able to iterate
+through all of the children of a node easily makes any sort of path finding/search algorithm significantly
+more efficient. Furthermore, the space complexity is reasonable since it only needs O(N + E) where N is
+the number of nodes and E is the total number of edges which is better than a adjacency matrix.
 
 
 
@@ -34,11 +48,56 @@ above, be sure to list its advantages and disadvantages, too.
 1. Describe any new tests you added and why you added them, or why you feel that your original
 tests alone are sufficient.
 
+All of the changes made to the tests were due to meeting the changes in my specification (see below).
 
+For getNodeByName I removed the test to check that a exception is thrown when a label that does not exist is passed and instead added tests
+to check that null is returned in that case.
 
+For the remove node and remove edge tests, I had to add tests to ensure that after attempting to remove a node/edge that does not exist not only
+does it return false but also the graph is left unchanged.
+
+In the script tests, I added some tests to test that adding a node to a graph that already existed results in no changes.
+
+Also in the script tests for addEdge, I added tests to check the correct functionality for adding a edge where one or both
+nodes do not exist and that adding a edge that already exists results in no changes.
+
+Since I added the getEdges method, I created a test in JUnit testing the behavior of the method on different graphs.
+
+Since I added the public Edge class I added some JUnit tests to test specifically the equals and hashcode methods in Edge.
 
 2. Did you make any changes to your specifications as you were implementing your Graph? (yes/no)
 If yes, describe your changes and why you made them.
+
+Yes
+
+In addNode and addEdge specifications I removed the requirement that the passed node/edge doesn't already
+exist in the graph and instead changed it to return false if that node/edge already existed and no changes were made.
+I did this because given my implementation using a hashmap, it strengthened the spec without much consequences.
+
+In addEdge spec.effects section I added the effect that the method will add missing nodes into the graph if they
+do not exist. This makes it so that I do not have to require that the two passed node already exist in the graph
+because that may make it harder for a client.
+
+In removeEdge spec I removed the requirement that the edge must exist in the graph and instead just specified that
+if the edge did not exist, the method did nothing and returned false. I did this because it strengthened my spec
+without much consequence given my implementation.
+
+In removeNode spec I removed the requirement that the node/node with label must exist in the graph and instead just specified that
+if the node/label did not exist, the method did nothing and returned false. Once again this strengthened my spec without
+much extra complications implementing.
+
+In removeNode again, I added the specification that if a node was removed, the method also went through the graph and removed
+all other occurrences of the node. This was added in order to satisfy the representation invariant when the method was called.
+
+In getNodeByName() I changed the spec so that instead of throwing an exception if a node with the passed label does not exist, it just
+returns null. I did this because there is no reason to crash the program if this method is passed a label that does not exist, instead
+retuning null allows the client more flexibility in how to call this function.
+
+I added a getLabel() method in the Node class just for ease of use by the client.
+
+I made my Edge class public in order to ensure that a client wanting to implement a search algorithm is able to do so both easily
+and with reasonable time complexity. Due to this, I also added a getEdges method in my graph class so that a client can get both
+the edge labels and children nodes of a node all in one set.
 
 
 

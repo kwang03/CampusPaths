@@ -1,7 +1,7 @@
 #Tests the behavior of the graph with a cycle
 
 #Create graph
-created graph graphName
+created graph myGraph
 
 #Adds some nodes to the graph
 added node n1 to myGraph

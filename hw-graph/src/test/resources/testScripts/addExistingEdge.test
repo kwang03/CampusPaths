@@ -1,0 +1,28 @@
+#Tests the behavior of adding a edge where the edge already exists
+
+#Creates graph
+CreateGraph myGraph
+
+#Adds nodes
+AddNode myGraph n1
+AddNode myGraph n2
+
+#Adds edge
+AddEdge myGraph n1 n2 e12
+
+#Lists children
+ListChildren myGraph n1
+ListChildren myGraph n2
+
+#Lists Nodes
+ListNodes myGraph
+
+#Add Edge again
+AddEdge myGraph n1 n2 e12
+
+#Lists children
+ListChildren myGraph n1
+ListChildren myGraph n2
+
+#Lists Nodes
+ListNodes myGraph
