@@ -24,7 +24,7 @@ public class DirectedLabeledGraph implements Iterable<DirectedLabeledGraph.Node>
     /**
      * Indicates if checkRep() will run in its entirety if called
      */
-    private final boolean DEBUG = true;
+    private final boolean DEBUG = false;
 
     //Abstract Invariant: adj.keySet() is the set of nodes in this DirectedLabeledGraph.
     //                    for each node n in adj.keySet(), for each edge e in adj.get(n) an outgoing edge starts from n and uses e to get to the destination node,
