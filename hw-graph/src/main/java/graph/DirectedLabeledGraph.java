@@ -32,7 +32,7 @@ public class DirectedLabeledGraph implements Iterable<DirectedLabeledGraph.Node>
 
     //Representation Invariant: adj != null
     //                          for each node n in adj.keySet(), n != null
-    //                          for each node n in adj.keySet(), for each edge e in adj.get(n) e != null and the destination node of e exists in the graph
+    //                          for each node n in adj.keySet(), for each edge e in adj.get(n), e != null and the destination node of e exists in the graph
     //
     //
     //                          (No duplicate nodes or edges between two nodes is implied through implementation using a hashset)

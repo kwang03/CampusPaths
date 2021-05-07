@@ -9,6 +9,7 @@ import org.junit.rules.Timeout;
 
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import static org.junit.Assert.*;
 
@@ -259,6 +260,11 @@ public class GraphTest {
         //Test return is false if node not removed
         assertFalse(g.removeNode(three));
         assertEquals(getOneEdgeTwoNodes(), g);
+
+        //Test remove node with edges still pointing to it
+        g = twoEdgesTwoNodes();
+        g.removeNode(two);
+        assertEquals(oneNode(), g);
     }
 
     @Test
@@ -295,7 +301,10 @@ public class GraphTest {
         assertFalse(g.removeNode("fake"));
         assertEquals(getOneEdgeTwoNodes(), g);
 
-
+        //Test remove node with edges still pointing to it
+        g = twoEdgesTwoNodes();
+        g.removeNode("two");
+        assertEquals(oneNode(), g);
     }
 
     //Remove Edge Tests

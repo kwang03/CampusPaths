@@ -54,7 +54,8 @@ For getNodeByName I removed the test to check that a exception is thrown when a 
 to check that null is returned in that case.
 
 For the remove node and remove edge tests, I had to add tests to ensure that after attempting to remove a node/edge that does not exist not only
-does it return false but also the graph is left unchanged.
+does it return false but also the graph is left unchanged. Additionally, in remove node I added a test for checking that when a node is removed all
+instances of that node are removed from the graph.
 
 In the script tests, I added a new test to test that adding a node to a graph that already existed results in no changes.
 
@@ -63,7 +64,8 @@ nodes do not exist and that adding a edge that already exists results in no chan
 
 Since I added the getEdges method, I created a test in JUnit testing the behavior of the method on different graphs.
 
-Since I added the public Edge class I added some JUnit tests to test specifically the equals and hashcode methods in Edge.
+Since I added the public Edge class I added some JUnit tests to test specifically the equals and hashcode methods in Edge. I did not feel
+it necessary to test the getLabel and getDestination methods just because they are simple getter methods
 
 2. Did you make any changes to your specifications as you were implementing your Graph? (yes/no)
 If yes, describe your changes and why you made them.
