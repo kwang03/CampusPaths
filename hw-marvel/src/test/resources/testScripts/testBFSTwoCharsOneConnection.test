@@ -1,0 +1,7 @@
+#Tests BFS on a graph with two characters and one connection between them
+
+LoadGraph myGraph twoCharsOnePath.csv
+
+FindPath myGraph Char1 Char2
+
+FindPath myGraph Char2 Char1

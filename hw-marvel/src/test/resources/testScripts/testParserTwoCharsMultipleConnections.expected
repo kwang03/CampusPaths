@@ -1,0 +1,9 @@
+#Tests the parser when there are two characters with multiple connections to each other
+
+loaded graph myGraph
+
+myGraph contains: Char1 Char2
+
+the children of Char1 in myGraph are: Char2(Book1) Char2(Book2) Char2(Book3)
+
+the children of Char2 in myGraph are: Char1(Book1) Char1(Book2) Char1(Book3)

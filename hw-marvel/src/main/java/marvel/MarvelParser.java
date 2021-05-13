@@ -16,12 +16,17 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Parser utility to load the Marvel Comics dataset.
  */
 public class MarvelParser {
+    //MarvelParser is not an ADT and therefore does not have a abstraction function or a representation invariant
+
 
     /**
      * Reads the Marvel Universe dataset. Each line of the input file contains a character name and a
@@ -29,16 +34,33 @@ public class MarvelParser {
      *
      * @param filename the file that will be read
      * @throws IOException if an error occurs while reading the file
+     * @return A Map from comic book names to a list of the characters that appeared in them
      * @spec.requires filename is a valid file in the resources/data folder.
      */
-    // TODO: Replace 'void' with the type you want the parser to produce
-    public static void parseData(String filename) throws IOException {
-        List<String> lines = readLines(filename);
+    public static Map<String, List<String>> parseData(String filename) throws IOException {
+        try {
+            List<String> lines = readLines(filename);
 
-        // TODO: Complete this method
-        // You'll need to:
-        //  - Split each line into its individual parts
-        //  - Collect the data into some convenient data structure(s) to return to the graph building code
+            // You'll need to:
+            //  - Split each line into its individual parts
+            //  - Collect the data into some convenient data structure(s) to return to the graph building code
+            Map<String, List<String>> map = new HashMap<>();
+            for (String line : lines) {
+                String[] parts = line.split(",");
+                if(parts.length != 2){
+                    throw new IOException();
+                }
+                String name = parts[0];
+                String book = parts[1];
+                if (!map.containsKey(book)) {
+                    map.put(book, new ArrayList<>());
+                }
+                map.get(book).add(name);
+            }
+            return map;
+        }catch (Exception e){
+            throw new IOException();
+        }
     }
 
     /**

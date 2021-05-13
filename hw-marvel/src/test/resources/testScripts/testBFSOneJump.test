@@ -1,0 +1,5 @@
+#Tests the BFS when the shortest path is one jump away
+
+LoadGraph myGraph staffSuperheroes.csv
+
+FindPath myGraph Ernst-the-Bicycling-Wizard Perkins-the-Magical-Singing-Instructor

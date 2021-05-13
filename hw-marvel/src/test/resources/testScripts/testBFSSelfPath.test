@@ -1,0 +1,7 @@
+#Tests the BFS when asked to find a self path
+
+LoadGraph myGraph twoCharsMultipleConnections.csv
+
+FindPath myGraph Char1 Char1
+
+FindPath myGraph Char2 Char2

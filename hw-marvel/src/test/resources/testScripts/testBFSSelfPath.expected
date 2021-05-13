@@ -1,0 +1,7 @@
+#Tests the BFS when asked to find a self path
+
+loaded graph myGraph
+
+path from Char1 to Char1:
+
+path from Char2 to Char2:

@@ -1,0 +1,6 @@
+#Tests BFS on a graph with no chars
+
+loaded graph myGraph
+
+unknown: Char1
+unknown: Char2

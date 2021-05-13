@@ -1,0 +1,5 @@
+#Tests BFS on finding a path that does not exist
+
+LoadGraph myGraph twoCharsNoPath.csv
+
+FindPath myGraph Char1 Char2

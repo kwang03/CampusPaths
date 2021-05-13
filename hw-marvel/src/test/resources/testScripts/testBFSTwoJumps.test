@@ -1,0 +1,5 @@
+#Tests BFS where shortest path is two jumps away
+
+LoadGraph myGraph twoJumps.csv
+
+FindPath myGraph Char1 Char3

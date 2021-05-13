@@ -1,0 +1,9 @@
+#Tests the parser in creating a graph with two characters with no connections
+
+loaded graph myGraph
+
+myGraph contains: Char1 Char2
+
+the children of Char1 in myGraph are:
+
+the children of Char2 in myGraph are:

@@ -80,6 +80,7 @@ public class DirectedLabeledGraph implements Iterable<DirectedLabeledGraph.Node>
             throw new IllegalArgumentException();
         }
         Node node = new Node(label);
+        checkRep();
         return addNode(node);
     }
 
@@ -188,6 +189,7 @@ public class DirectedLabeledGraph implements Iterable<DirectedLabeledGraph.Node>
             throw new IllegalArgumentException();
         }
         Node node = new Node(label);
+        checkRep();
         return removeNode(node);
     }
 

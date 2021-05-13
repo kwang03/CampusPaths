@@ -1,0 +1,9 @@
+#Tests the parser when there are two characters with multiple connections to each other
+
+LoadGraph myGraph twoCharsMultipleConnections.csv
+
+ListNodes myGraph
+
+ListChildren myGraph Char1
+
+ListChildren myGraph Char2

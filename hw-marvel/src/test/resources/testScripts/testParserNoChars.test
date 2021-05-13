@@ -1,0 +1,6 @@
+#Tests the parser on a empty file
+
+#Create graph
+LoadGraph myGraph noChars.csv
+
+ListNodes myGraph

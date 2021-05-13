@@ -1,0 +1,5 @@
+#Tests BFS on a graph with no chars
+
+LoadGraph myGraph noChars.csv
+
+FindPath myGraph Char1 Char2

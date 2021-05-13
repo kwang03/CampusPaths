@@ -1,0 +1,9 @@
+#Tests the parser when there are two characters with just one connection
+
+loaded graph myGraph
+
+myGraph contains: Char1 Char2
+
+the children of Char1 in myGraph are: Char2(Book1)
+
+the children of Char2 in myGraph are: Char1(Book1)

@@ -1,0 +1,5 @@
+#Tests the BFS on a graph where there is more than one path between two characters using different characters on the path
+
+LoadGraph myGraph multipleCharPaths.csv
+
+FindPath myGraph Char1 Char4

@@ -1,0 +1,6 @@
+#Tests BFS on finding a path that does not exist
+
+loaded graph myGraph
+
+path from Char1 to Char2:
+no path found

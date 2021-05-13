@@ -1,0 +1,18 @@
+#Tests the BFS on a graph with 5 nodes
+
+loaded graph myGraph
+
+path from Char1 to Char2:
+Char1 to Char2 via Book1
+
+path from Char1 to Char4:
+Char1 to Char2 via Book1
+Char2 to Char4 via Book2
+
+path from Char1 to Char3:
+no path found
+
+path from Char1 to Char5:
+Char1 to Char5 via Book1
+
+unknown: Char6

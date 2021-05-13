@@ -1,0 +1,6 @@
+#Tests the BFS when the shortest path is one jump away
+
+loaded graph myGraph
+
+path from Ernst-the-Bicycling-Wizard to Perkins-the-Magical-Singing-Instructor:
+Ernst-the-Bicycling-Wizard to Perkins-the-Magical-Singing-Instructor via CSE331

@@ -1,0 +1,9 @@
+#Tests the parser in creating a graph with two characters with no connections
+
+LoadGraph myGraph twoCharsNoPath.csv
+
+ListNodes myGraph
+
+ListChildren myGraph Char1
+
+ListChildren myGraph Char2

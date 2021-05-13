@@ -1,0 +1,9 @@
+#Tests the parser when there are two characters with just one connection
+
+LoadGraph myGraph twoCharsOnePath.csv
+
+ListNodes myGraph
+
+ListChildren myGraph Char1
+
+ListChildren myGraph Char2

@@ -1,0 +1,7 @@
+#Tests BFS where shortest path is two jumps away
+
+loaded graph myGraph
+
+path from Char1 to Char3:
+Char1 to Char2 via Book1
+Char2 to Char3 via Book2

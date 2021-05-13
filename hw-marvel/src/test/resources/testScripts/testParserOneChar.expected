@@ -1,0 +1,8 @@
+#Tests the parser in creating a graph with one character
+
+#Create Graph
+loaded graph myGraph
+
+myGraph contains: Char1
+
+the children of Char1 in myGraph are:

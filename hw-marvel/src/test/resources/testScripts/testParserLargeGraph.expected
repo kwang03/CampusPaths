@@ -1,0 +1,15 @@
+#Tests the parser on a graph with 5 characters
+
+loaded graph myGraph
+
+myGraph contains: Char1 Char2 Char3 Char4 Char5
+
+the children of Char1 in myGraph are: Char2(Book1) Char5(Book1)
+
+the children of Char2 in myGraph are: Char1(Book1) Char4(Book2) Char5(Book1)
+
+the children of Char3 in myGraph are:
+
+the children of Char4 in myGraph are: Char2(Book2)
+
+the children of Char5 in myGraph are: Char1(Book1) Char2(Book1)

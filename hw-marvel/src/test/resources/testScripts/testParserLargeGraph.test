@@ -1,0 +1,15 @@
+#Tests the parser on a graph with 5 characters
+
+LoadGraph myGraph largeGraph.csv
+
+ListNodes myGraph
+
+ListChildren myGraph Char1
+
+ListChildren myGraph Char2
+
+ListChildren myGraph Char3
+
+ListChildren myGraph Char4
+
+ListChildren myGraph Char5
