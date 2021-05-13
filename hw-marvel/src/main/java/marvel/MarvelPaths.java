@@ -16,7 +16,7 @@ public class MarvelPaths {
     /**
      * The name of the file containing data about characters and books they are in
      */
-    private static final String fileName = "twoCharsOnePath.csv";
+    private static final String fileName = "marvel.csv";
 
     /**Creates a DirectedLabeledGraph network graph from a csv file containing names and books the names are in separated by a comma
      *

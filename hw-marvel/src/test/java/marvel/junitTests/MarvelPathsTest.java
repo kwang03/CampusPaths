@@ -1,10 +1,12 @@
 package marvel.junitTests;
 
 import graph.DirectedLabeledGraph;
+import org.junit.Rule;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import marvel.*;
 import org.junit.function.ThrowingRunnable;
+import org.junit.rules.Timeout;
 
 import java.io.IOException;
 
@@ -15,9 +17,11 @@ import java.io.IOException;
  * <p>
  */
 public class MarvelPathsTest {
+    @Rule
+    public Timeout globalTimeout = Timeout.seconds(10); // 10 seconds max per method tested
 
     @Test (expected = IllegalArgumentException.class)
-    public void buildExceptionTest() throws IOException{
+    public void buildExceptionTest(){
         MarvelPaths.buildGraph("badFile.csv");
     }
 
@@ -45,13 +49,13 @@ public class MarvelPathsTest {
     }
 
     @Test
-    public void endDoesntExistTest() throws IOException{
+    public void endDoesntExistTest() {
         DirectedLabeledGraph graph = MarvelPaths.buildGraph("staffSuperheroes.csv");
         assertNull(MarvelPaths.findPath("Ernst-the-Bicycling-Wizard", "Dont exist", graph));
     }
 
     @Test
-    public void pathDoesntExistTest() throws IOException{
+    public void pathDoesntExistTest(){
         DirectedLabeledGraph graph = MarvelPaths.buildGraph("twoCharsNoPath.csv");
         assertNull(MarvelPaths.findPath("Char1", "Char2", graph));
     }
