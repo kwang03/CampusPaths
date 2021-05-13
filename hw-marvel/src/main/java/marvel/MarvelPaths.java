@@ -14,7 +14,7 @@ public class MarvelPaths {
 
 
     /**
-     * The name of the file containing data about characters and books they are in
+     * The name of the file containing data about characters and the books they are in
      */
     private static final String fileName = "marvel.csv";
 

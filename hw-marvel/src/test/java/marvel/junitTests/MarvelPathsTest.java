@@ -12,7 +12,7 @@ import java.io.IOException;
 
 /**
  * This class contains a set of test cases that can be used to test the implementation of the
- * MarvelPaths class not tested by the script tests.
+ * MarvelPaths class not tested by the script tests. Mostly edge case tests.
  *
  * <p>
  */
