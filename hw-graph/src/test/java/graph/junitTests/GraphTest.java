@@ -23,40 +23,40 @@ import static org.junit.Assert.*;
 public class GraphTest {
     @Rule public Timeout globalTimeout = Timeout.seconds(10); // 10 seconds max per method tested
     //Some nodes to use for testing
-    private DirectedLabeledGraph.Node one = new DirectedLabeledGraph.Node("one");
-    private DirectedLabeledGraph.Node two = new DirectedLabeledGraph.Node("two");
-    private DirectedLabeledGraph.Node three = new DirectedLabeledGraph.Node("three");
+    private DirectedLabeledGraph.Node<String> one = new DirectedLabeledGraph.Node<>("one");
+    private DirectedLabeledGraph.Node<String> two = new DirectedLabeledGraph.Node<>("two");
+    private DirectedLabeledGraph.Node<String> three = new DirectedLabeledGraph.Node<>("three");
     //@BeforeClass
 
     //Some methods to get basic graph examples without edges
-    private  DirectedLabeledGraph empty(){
-        return new DirectedLabeledGraph();
+    private  DirectedLabeledGraph<String,String> empty(){
+        return new DirectedLabeledGraph<String,String>();
     }
 
-    private DirectedLabeledGraph oneNode(){
-        DirectedLabeledGraph oneNode = new DirectedLabeledGraph();
+    private DirectedLabeledGraph<String,String> oneNode(){
+        DirectedLabeledGraph<String,String> oneNode = new DirectedLabeledGraph<String,String>();
         oneNode.addNode(one);
         return oneNode;
     }
 
-    private DirectedLabeledGraph twoNodes(){
-        DirectedLabeledGraph twoNodes = new DirectedLabeledGraph();
+    private DirectedLabeledGraph<String,String> twoNodes(){
+        DirectedLabeledGraph<String,String> twoNodes = new DirectedLabeledGraph<String,String>();
         twoNodes.addNode(one);
         twoNodes.addNode(two);
         return twoNodes;
     }
 
     //Some methods to get basic graph examples with edges
-    private DirectedLabeledGraph getOneEdgeTwoNodes(){
-        DirectedLabeledGraph oneEdgeTwoNodes = new DirectedLabeledGraph();
+    private DirectedLabeledGraph<String,String> getOneEdgeTwoNodes(){
+        DirectedLabeledGraph<String,String> oneEdgeTwoNodes = new DirectedLabeledGraph<String,String>();
         oneEdgeTwoNodes.addNode(one);
         oneEdgeTwoNodes.addNode(two);
         oneEdgeTwoNodes.addEdge("e1", one, two);
         return oneEdgeTwoNodes;
     }
 
-    private DirectedLabeledGraph getTwoEdgesThreeNodes(){
-        DirectedLabeledGraph twoEdgesThreeNodes = new DirectedLabeledGraph();
+    private DirectedLabeledGraph<String,String> getTwoEdgesThreeNodes(){
+        DirectedLabeledGraph<String,String> twoEdgesThreeNodes = new DirectedLabeledGraph<String,String>();
         twoEdgesThreeNodes.addNode(one);
         twoEdgesThreeNodes.addNode(two);
         twoEdgesThreeNodes.addNode(three);
@@ -66,8 +66,8 @@ public class GraphTest {
     }
 
     //Helper functions to get special graph cases
-    private DirectedLabeledGraph oneEdgeThreeNodes(){
-        DirectedLabeledGraph oneEdgeThreeNodes = new DirectedLabeledGraph();
+    private DirectedLabeledGraph<String,String> oneEdgeThreeNodes(){
+        DirectedLabeledGraph<String,String> oneEdgeThreeNodes = new DirectedLabeledGraph<String,String>();
         oneEdgeThreeNodes.addNode(one);
         oneEdgeThreeNodes.addNode(two);
         oneEdgeThreeNodes.addNode(three);
@@ -75,16 +75,16 @@ public class GraphTest {
         return oneEdgeThreeNodes;
     }
 
-    private DirectedLabeledGraph threeNodes(){
-        DirectedLabeledGraph threeNodes = new DirectedLabeledGraph();
+    private DirectedLabeledGraph<String,String> threeNodes(){
+        DirectedLabeledGraph<String,String> threeNodes = new DirectedLabeledGraph<String,String>();
         threeNodes.addNode(one);
         threeNodes.addNode(two);
         threeNodes.addNode(three);
         return threeNodes;
     }
 
-    private DirectedLabeledGraph twoEdgesTwoNodes(){
-        DirectedLabeledGraph twoEdgesTwoNodes = new DirectedLabeledGraph();
+    private DirectedLabeledGraph<String,String> twoEdgesTwoNodes(){
+        DirectedLabeledGraph<String,String> twoEdgesTwoNodes = new DirectedLabeledGraph<String,String>();
         twoEdgesTwoNodes.addNode(one);
         twoEdgesTwoNodes.addNode(two);
         twoEdgesTwoNodes.addEdge("e1",one,two);
@@ -92,8 +92,8 @@ public class GraphTest {
         return twoEdgesTwoNodes;
     }
 
-    private DirectedLabeledGraph selfLoop(){
-        DirectedLabeledGraph selfLoop = new DirectedLabeledGraph();
+    private DirectedLabeledGraph<String,String> selfLoop(){
+        DirectedLabeledGraph<String,String> selfLoop = new DirectedLabeledGraph<String,String>();
         selfLoop.addNode(one);
         selfLoop.addEdge("e1", one, one);
         return selfLoop;
@@ -103,7 +103,7 @@ public class GraphTest {
     @Test
     public void equalsTest(){
         //Empty graph test
-        DirectedLabeledGraph g = new DirectedLabeledGraph();
+        DirectedLabeledGraph<String,String> g = new DirectedLabeledGraph<String,String>();
         assertTrue(g.equals(g));
         assertTrue(g.equals(empty()));
         assertTrue(empty().equals(g));
@@ -142,7 +142,7 @@ public class GraphTest {
     @Test
     public void hashCodeTest(){
         //Empty graph tests
-        DirectedLabeledGraph g = new DirectedLabeledGraph();
+        DirectedLabeledGraph<String,String> g = new DirectedLabeledGraph<String,String>();
         assertTrue(g.hashCode() == g.hashCode());
         assertTrue(g.hashCode() == empty().hashCode());
 
@@ -171,13 +171,13 @@ public class GraphTest {
     @Test
     public void equalsNodeTest(){
         //"One" node test
-        DirectedLabeledGraph.Node node = new DirectedLabeledGraph.Node("one");
+        DirectedLabeledGraph.Node<String> node = new DirectedLabeledGraph.Node<String>("one");
         assertTrue(node.equals(one));
         assertTrue(node.equals(node));
         assertFalse(node.equals(null));
 
         //"Two" node test
-        node = new DirectedLabeledGraph.Node("two");
+        node = new DirectedLabeledGraph.Node<String>("two");
         assertTrue(node.equals(two));
         assertTrue(node.equals(node));
         assertFalse(node.equals(null));
@@ -186,12 +186,12 @@ public class GraphTest {
     @Test
     public void hashCodeNodeTest(){
         //"One" node test
-        DirectedLabeledGraph.Node node = new DirectedLabeledGraph.Node("one");
+        DirectedLabeledGraph.Node<String> node = new DirectedLabeledGraph.Node<String>("one");
         assertTrue(node.hashCode() == node.hashCode());
         assertTrue(node.hashCode() == one.hashCode());
 
         //"Two" node test
-        node = new DirectedLabeledGraph.Node("two");
+        node = new DirectedLabeledGraph.Node<String>("two");
         assertTrue(node.hashCode() == node.hashCode());
         assertTrue(node.hashCode() == two.hashCode());
     }
@@ -199,10 +199,10 @@ public class GraphTest {
     @Test
     public void equalsEdgeTest(){
         //Edge test
-        DirectedLabeledGraph.Edge e1 = new DirectedLabeledGraph.Edge("e1", one);
-        DirectedLabeledGraph.Edge e2 = new DirectedLabeledGraph.Edge("e1", one);
-        DirectedLabeledGraph.Edge e3 = new DirectedLabeledGraph.Edge("e2",one);
-        DirectedLabeledGraph.Edge e4 = new DirectedLabeledGraph.Edge("e1",two);
+        DirectedLabeledGraph.Edge<String,String> e1 = new DirectedLabeledGraph.Edge<String,String>("e1", one);
+        DirectedLabeledGraph.Edge<String,String> e2 = new DirectedLabeledGraph.Edge<String,String>("e1", one);
+        DirectedLabeledGraph.Edge<String,String> e3 = new DirectedLabeledGraph.Edge<String,String>("e2",one);
+        DirectedLabeledGraph.Edge<String,String> e4 = new DirectedLabeledGraph.Edge<String,String>("e1",two);
         //Equality test
         assertTrue(e1.equals(e2));
         assertTrue(e2.equals(e1));
@@ -220,8 +220,8 @@ public class GraphTest {
     @Test
     public void hashCodeEdgeTest(){
         //"One" node test
-        DirectedLabeledGraph.Edge e1 = new DirectedLabeledGraph.Edge("e1", one);
-        DirectedLabeledGraph.Edge e2 = new DirectedLabeledGraph.Edge("e1", one);
+        DirectedLabeledGraph.Edge<String,String> e1 = new DirectedLabeledGraph.Edge<String,String>("e1", one);
+        DirectedLabeledGraph.Edge<String,String> e2 = new DirectedLabeledGraph.Edge<String,String>("e1", one);
         assertTrue(e1.hashCode() == e1.hashCode());
         assertTrue(e1.hashCode() == e2.hashCode());
     }
@@ -230,7 +230,7 @@ public class GraphTest {
     @Test
     public void testRemoveNodeNodeArg(){
         //Remove from single node graph
-        DirectedLabeledGraph g = oneNode();
+        DirectedLabeledGraph<String,String> g = oneNode();
         g.removeNode(one);
         assertEquals(g, empty());
         //Test return is false if node not removed
@@ -270,7 +270,7 @@ public class GraphTest {
     @Test
     public void testRemoveNodeStringArg(){
         //Remove from single node graph
-        DirectedLabeledGraph g = oneNode();
+        DirectedLabeledGraph<String,String> g = oneNode();
         g.removeNode("one");
         assertEquals(g, empty());
         //Test return is false if node not removed
@@ -311,7 +311,7 @@ public class GraphTest {
     @Test
     public void testRemoveEdge(){
         //Remove edge from two node one edge
-        DirectedLabeledGraph g = getOneEdgeTwoNodes();
+        DirectedLabeledGraph<String,String> g = getOneEdgeTwoNodes();
         g.removeEdge("e1", one, two);
         assertEquals(g, twoNodes());
         //Test return false if edge doesnt exist
@@ -343,7 +343,7 @@ public class GraphTest {
     //Clear test
     @Test
     public void clearTest(){
-        DirectedLabeledGraph g = oneNode();
+        DirectedLabeledGraph<String,String> g = oneNode();
         g.clear();
         assertEquals(g, empty());
 
@@ -372,7 +372,7 @@ public class GraphTest {
     @Test
     public void getNodeByNameTest(){
         //Test one node graph
-        DirectedLabeledGraph g = oneNode();
+        DirectedLabeledGraph<String,String> g = oneNode();
         assertEquals(g.getNodeByName("one"), one);
         assertNull(g.getNodeByName("fake"));
         //Test two node graph
@@ -398,7 +398,7 @@ public class GraphTest {
     @Test
     public void getEdgesBetweenTest(){
         //Test no edges in between
-        DirectedLabeledGraph g = twoNodes();
+        DirectedLabeledGraph<String,String> g = twoNodes();
         HashSet<String> s = new HashSet<>();
         assertEquals(g.getEdgesBetween(one, two), s);
 
@@ -420,18 +420,18 @@ public class GraphTest {
     @Test
     public void getEdgesTest(){
         //No edges test
-        DirectedLabeledGraph g = oneNode();
-        HashSet<DirectedLabeledGraph.Edge> s = new HashSet<>();
+        DirectedLabeledGraph<String,String> g = oneNode();
+        HashSet<DirectedLabeledGraph.Edge<String,String>> s = new HashSet<>();
         assertEquals(g.getEdges(one), s);
 
         //One edge test
         g = getOneEdgeTwoNodes();
-        s.add(new DirectedLabeledGraph.Edge("e1", two));
+        s.add(new DirectedLabeledGraph.Edge<String,String>("e1", two));
         assertEquals(s, g.getEdges(one));
 
         //Two edge test
         g = twoEdgesTwoNodes();
-        s.add(new DirectedLabeledGraph.Edge("e2",two));
+        s.add(new DirectedLabeledGraph.Edge<String,String>("e2",two));
         assertEquals(s, g.getEdges(one));
     }
 
@@ -439,10 +439,10 @@ public class GraphTest {
     //Iterator Test
     @Test
     public void iteratorTest(){
-        DirectedLabeledGraph g = empty();
-        HashSet<DirectedLabeledGraph.Node> expected = new HashSet<>();
-        HashSet<DirectedLabeledGraph.Node> actual = new HashSet<>();
-        for (DirectedLabeledGraph.Node node : g) {
+        DirectedLabeledGraph<String,String> g = empty();
+        HashSet<DirectedLabeledGraph.Node<String>> expected = new HashSet<>();
+        HashSet<DirectedLabeledGraph.Node<String>> actual = new HashSet<>();
+        for (DirectedLabeledGraph.Node<String> node : g) {
             expected.add(node);
         }
         assertEquals(actual,expected);
@@ -451,7 +451,7 @@ public class GraphTest {
         expected = new HashSet<>();
         expected.add(one);
         actual = new HashSet<>();
-        for (DirectedLabeledGraph.Node node : g) {
+        for (DirectedLabeledGraph.Node<String> node : g) {
             actual.add(node);
         }
         assertEquals(actual,expected);
@@ -461,7 +461,7 @@ public class GraphTest {
         expected.add(one);
         expected.add(two);
         actual = new HashSet<>();
-        for (DirectedLabeledGraph.Node node : g) {
+        for (DirectedLabeledGraph.Node<String> node : g) {
             actual.add(node);
         }
         assertEquals(actual,expected);
@@ -471,7 +471,7 @@ public class GraphTest {
         expected.add(one);
         expected.add(two);
         actual = new HashSet<>();
-        for (DirectedLabeledGraph.Node node : g) {
+        for (DirectedLabeledGraph.Node<String> node : g) {
             actual.add(node);
         }
         assertEquals(actual,expected);
@@ -482,7 +482,7 @@ public class GraphTest {
         expected.add(two);
         expected.add(three);
         actual = new HashSet<>();
-        for (DirectedLabeledGraph.Node node : g) {
+        for (DirectedLabeledGraph.Node<String> node : g) {
             actual.add(node);
         }
         assertEquals(actual,expected);

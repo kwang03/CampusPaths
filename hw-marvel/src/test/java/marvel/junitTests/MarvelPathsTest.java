@@ -27,13 +27,13 @@ public class MarvelPathsTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void nullStartTest() throws IOException {
-        DirectedLabeledGraph graph = MarvelPaths.buildGraph("staffSuperheroes.csv");
+        DirectedLabeledGraph<String,String> graph = MarvelPaths.buildGraph("staffSuperheroes.csv");
         MarvelPaths.findPath(null, "Ernst-the-Bicycling-Wizard", graph);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void nullEndTest() throws IOException {
-        DirectedLabeledGraph graph = MarvelPaths.buildGraph("staffSuperheroes.csv");
+        DirectedLabeledGraph<String,String> graph = MarvelPaths.buildGraph("staffSuperheroes.csv");
         MarvelPaths.findPath("Ernst-the-Bicycling-Wizard",null, graph);
     }
 
@@ -44,19 +44,19 @@ public class MarvelPathsTest {
 
     @Test (expected = IllegalArgumentException.class)
     public void startDoesntExistTest() throws IOException{
-        DirectedLabeledGraph graph = MarvelPaths.buildGraph("staffSuperheroes.csv");
+        DirectedLabeledGraph<String,String> graph = MarvelPaths.buildGraph("staffSuperheroes.csv");
         MarvelPaths.findPath("Dont exist", "Ernst-the-Bicycling-Wizard", graph);
     }
 
     @Test
     public void endDoesntExistTest() {
-        DirectedLabeledGraph graph = MarvelPaths.buildGraph("staffSuperheroes.csv");
+        DirectedLabeledGraph<String,String> graph = MarvelPaths.buildGraph("staffSuperheroes.csv");
         assertNull(MarvelPaths.findPath("Ernst-the-Bicycling-Wizard", "Dont exist", graph));
     }
 
     @Test
     public void pathDoesntExistTest(){
-        DirectedLabeledGraph graph = MarvelPaths.buildGraph("twoCharsNoPath.csv");
+        DirectedLabeledGraph<String,String> graph = MarvelPaths.buildGraph("twoCharsNoPath.csv");
         assertNull(MarvelPaths.findPath("Char1", "Char2", graph));
     }
 }

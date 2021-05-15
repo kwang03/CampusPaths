@@ -33,7 +33,7 @@ public class GraphTestDriver {
      * String -> Graph: maps the names of graphs to the actual graph
      **/
     // TODO for the student: Uncomment and parameterize the next line correctly:
-    private final Map<String, DirectedLabeledGraph> graphs = new HashMap<String, DirectedLabeledGraph>();
+    private final Map<String, DirectedLabeledGraph<String,String>> graphs = new HashMap<String, DirectedLabeledGraph<String,String>>();
     private final PrintWriter output;
     private final BufferedReader input;
 
@@ -120,7 +120,7 @@ public class GraphTestDriver {
     private void createGraph(String graphName) {
         // TODO Insert your code here.
 
-         graphs.put(graphName, new DirectedLabeledGraph());
+         graphs.put(graphName, new DirectedLabeledGraph<String,String>());
          output.println("created graph " + graphName);
     }
 
@@ -138,7 +138,7 @@ public class GraphTestDriver {
     private void addNode(String graphName, String nodeName) {
         // TODO Insert your code here.
 
-         DirectedLabeledGraph graph = graphs.get(graphName);
+         DirectedLabeledGraph<String,String> graph = graphs.get(graphName);
          graph.addNode(nodeName);
          output.println("added node " + nodeName + " to " + graphName);
     }
@@ -160,9 +160,9 @@ public class GraphTestDriver {
                          String edgeLabel) {
         // TODO Insert your code here.
 
-         DirectedLabeledGraph graph = graphs.get(graphName);
-         DirectedLabeledGraph.Node parent = new DirectedLabeledGraph.Node(parentName);
-         DirectedLabeledGraph.Node child = new DirectedLabeledGraph.Node(childName);
+         DirectedLabeledGraph<String,String> graph = graphs.get(graphName);
+         DirectedLabeledGraph.Node<String> parent = new DirectedLabeledGraph.Node<String>(parentName);
+         DirectedLabeledGraph.Node<String> child = new DirectedLabeledGraph.Node<String>(childName);
          graph.addEdge(edgeLabel,parent,child);
          output.println("added edge " + edgeLabel + " from " + parentName + " to " + childName + " in " + graphName);
     }
@@ -179,14 +179,14 @@ public class GraphTestDriver {
     private void listNodes(String graphName) {
         // TODO Insert your code here.
 
-         DirectedLabeledGraph graph = graphs.get(graphName);
-         Set<DirectedLabeledGraph.Node> nodes = graph.getNodes();
+         DirectedLabeledGraph<String,String> graph = graphs.get(graphName);
+         Set<DirectedLabeledGraph.Node<String>> nodes = graph.getNodes();
 
-        List<DirectedLabeledGraph.Node> nodeList = new ArrayList<>(nodes);
+        List<DirectedLabeledGraph.Node<String>> nodeList = new ArrayList<>(nodes);
 
          nodeList.sort(new sortNodes());
          output.print(graphName + " contains:");
-         for(DirectedLabeledGraph.Node node : nodeList){
+         for(DirectedLabeledGraph.Node<String> node : nodeList){
              output.print(" " + node.getLabel());
          }
          output.println();
@@ -205,34 +205,34 @@ public class GraphTestDriver {
     private void listChildren(String graphName, String parentName) {
         // TODO Insert your code here.
 
-         DirectedLabeledGraph graph = graphs.get(graphName);
-         Set<DirectedLabeledGraph.Edge> edges = graph.getEdges(new DirectedLabeledGraph.Node(parentName));
+         DirectedLabeledGraph<String,String> graph = graphs.get(graphName);
+         Set<DirectedLabeledGraph.Edge<String,String>> edges = graph.getEdges(new DirectedLabeledGraph.Node<String>(parentName));
 
-         List<DirectedLabeledGraph.Edge> edgeList = new ArrayList<>(edges);
+         List<DirectedLabeledGraph.Edge<String,String>> edgeList = new ArrayList<>(edges);
 
          edgeList.sort(new sortEdgeDestination().thenComparing(new sortEdgeNames()));
 
          output.print("the children of " + parentName + " in " + graphName + " are:");
-         for(DirectedLabeledGraph.Edge edge : edgeList){
+         for(DirectedLabeledGraph.Edge<String,String> edge : edgeList){
              output.print(" " + edge.getDestination().getLabel() + "(" + edge.getLabel() + ")");
          }
          output.println();
     }
 
-    private static class sortNodes implements Comparator<DirectedLabeledGraph.Node>{
-        public int compare(DirectedLabeledGraph.Node a, DirectedLabeledGraph.Node b){
+    private static class sortNodes implements Comparator<DirectedLabeledGraph.Node<String>>{
+        public int compare(DirectedLabeledGraph.Node<String> a, DirectedLabeledGraph.Node<String> b){
             return a.getLabel().compareTo(b.getLabel());
         }
     }
 
-    private static class sortEdgeNames implements Comparator<DirectedLabeledGraph.Edge>{
-        public int compare(DirectedLabeledGraph.Edge a, DirectedLabeledGraph.Edge b){
+    private static class sortEdgeNames implements Comparator<DirectedLabeledGraph.Edge<String,String>>{
+        public int compare(DirectedLabeledGraph.Edge<String,String> a, DirectedLabeledGraph.Edge<String,String> b){
             return a.getLabel().compareTo(b.getLabel());
         }
     }
 
-    private static class sortEdgeDestination implements Comparator<DirectedLabeledGraph.Edge>{
-        public int compare(DirectedLabeledGraph.Edge a, DirectedLabeledGraph.Edge b){
+    private static class sortEdgeDestination implements Comparator<DirectedLabeledGraph.Edge<String,String>>{
+        public int compare(DirectedLabeledGraph.Edge<String,String> a, DirectedLabeledGraph.Edge<String,String> b){
             return a.getDestination().getLabel().compareTo(b.getDestination().getLabel());
         }
     }

@@ -24,16 +24,16 @@ public class MarvelPaths {
      * @return A DirectedLabeledGraph representing the relationships between characters where the nodes are characters and the edges are books the characters are both in
      * @throws IllegalArgumentException if there is a problem with the input file
      */
-    public static DirectedLabeledGraph buildGraph(String fileName) {
-        DirectedLabeledGraph graph = new DirectedLabeledGraph();
+    public static DirectedLabeledGraph<String,String> buildGraph(String fileName) {
+        DirectedLabeledGraph<String,String> graph = new DirectedLabeledGraph<>();
         try {
             Map<String, List<String>> map = MarvelParser.parseData(fileName);
             for (String book : map.keySet()) {
                 for (String name1 : map.get(book)) {
-                    DirectedLabeledGraph.Node name1Node = new DirectedLabeledGraph.Node(name1);
+                    DirectedLabeledGraph.Node<String> name1Node = new DirectedLabeledGraph.Node<>(name1);
                     graph.addNode(name1Node);
                     for (String name2 : map.get(book)) {
-                        DirectedLabeledGraph.Node name2Node = new DirectedLabeledGraph.Node(name2);
+                        DirectedLabeledGraph.Node<String> name2Node = new DirectedLabeledGraph.Node<>(name2);
                         graph.addNode(name2Node);
                         if (!name1.equals(name2)) {
                             graph.addEdge(book, name1Node, name2Node);
@@ -57,29 +57,29 @@ public class MarvelPaths {
      *         not be in the returned list, the path is implied to start at "start"
      * @throws IllegalArgumentException if start, end or graph are null or if start is not a node in graph
      */
-    public static List<DirectedLabeledGraph.Edge> findPath(String start, String end, DirectedLabeledGraph graph){
+    public static List<DirectedLabeledGraph.Edge<String,String>> findPath(String start, String end, DirectedLabeledGraph<String,String> graph){
         if(start == null || end == null || graph == null){
             throw new IllegalArgumentException();
         }
-        DirectedLabeledGraph.Node startNode = new DirectedLabeledGraph.Node(start);
-        DirectedLabeledGraph.Node endNode = new DirectedLabeledGraph.Node(end);
-        Queue<DirectedLabeledGraph.Node> nodeQueue = new LinkedList<>(); //Queue holding next nodes to explore
-        Map<DirectedLabeledGraph.Node, List<DirectedLabeledGraph.Edge>> paths = new HashMap<>(); //Maps each node to the shortest path to get there
+        DirectedLabeledGraph.Node<String> startNode = new DirectedLabeledGraph.Node<>(start);
+        DirectedLabeledGraph.Node<String> endNode = new DirectedLabeledGraph.Node<String>(end);
+        Queue<DirectedLabeledGraph.Node<String>> nodeQueue = new LinkedList<>(); //Queue holding next nodes to explore
+        Map<DirectedLabeledGraph.Node<String>, List<DirectedLabeledGraph.Edge<String,String>>> paths = new HashMap<>(); //Maps each node to the shortest path to get there
 
         nodeQueue.add(startNode);
         paths.put(startNode, new ArrayList<>());
         while(!nodeQueue.isEmpty()){
-            DirectedLabeledGraph.Node currNode = nodeQueue.remove();
+            DirectedLabeledGraph.Node<String> currNode = nodeQueue.remove();
             if(currNode.equals(endNode)){ //We found the destination node
                 return paths.get(currNode);
             }
-            List<DirectedLabeledGraph.Edge> edgeList = new ArrayList<>(graph.getEdges(currNode));
+            List<DirectedLabeledGraph.Edge<String,String>> edgeList = new ArrayList<>(graph.getEdges(currNode));
             edgeList.sort(new sortEdgeDestination().thenComparing(new sortEdgeNames())); //Sort the list in lexicographical order
-            for(DirectedLabeledGraph.Edge edge : edgeList){
-                DirectedLabeledGraph.Node destNode = edge.getDestination();
+            for(DirectedLabeledGraph.Edge<String,String> edge : edgeList){
+                DirectedLabeledGraph.Node<String> destNode = edge.getDestination();
                 if(!paths.containsKey(destNode)){
-                    List<DirectedLabeledGraph.Edge> currPath = paths.get(currNode);
-                    List<DirectedLabeledGraph.Edge> newPath = new ArrayList<>(currPath);
+                    List<DirectedLabeledGraph.Edge<String,String>> currPath = paths.get(currNode);
+                    List<DirectedLabeledGraph.Edge<String,String>> newPath = new ArrayList<>(currPath);
                     newPath.add(edge); //Shortest path to parent node + edge from parent to child = shortest path to child
                     paths.put(destNode, newPath);
                     nodeQueue.add(destNode);
@@ -93,8 +93,8 @@ public class MarvelPaths {
     /**
      * A private helper class that implements the Comparator interface and sorts DirectedLabeledGraph Edges by the labels of the edges themselves
      */
-    private static class sortEdgeNames implements Comparator<DirectedLabeledGraph.Edge>{
-        public int compare(DirectedLabeledGraph.Edge a, DirectedLabeledGraph.Edge b){
+    private static class sortEdgeNames implements Comparator<DirectedLabeledGraph.Edge<String,String>>{
+        public int compare(DirectedLabeledGraph.Edge<String,String> a, DirectedLabeledGraph.Edge<String,String> b){
             return a.getLabel().compareTo(b.getLabel());
         }
     }
@@ -102,8 +102,8 @@ public class MarvelPaths {
     /**
      * A private helper class that implements the Comparator interface and sorts DirectedLabeledGraph Edges by the labels of the edge children
      */
-    private static class sortEdgeDestination implements Comparator<DirectedLabeledGraph.Edge>{
-        public int compare(DirectedLabeledGraph.Edge a, DirectedLabeledGraph.Edge b){
+    private static class sortEdgeDestination implements Comparator<DirectedLabeledGraph.Edge<String,String>>{
+        public int compare(DirectedLabeledGraph.Edge<String,String> a, DirectedLabeledGraph.Edge<String,String> b){
             return a.getDestination().getLabel().compareTo(b.getDestination().getLabel());
         }
     }
@@ -116,7 +116,7 @@ public class MarvelPaths {
     public static void main(String[] args){
         Scanner input = new Scanner(System.in);
 
-        DirectedLabeledGraph graph = buildGraph(fileName);
+        DirectedLabeledGraph<String,String> graph = buildGraph(fileName);
         String again = "y";
         System.out.println("Welcome to the CSE331 Marvel Paths Finder!");
 
@@ -129,15 +129,15 @@ public class MarvelPaths {
             String char2 = input.next();
             System.out.println();
 
-            DirectedLabeledGraph.Node node1 = new DirectedLabeledGraph.Node(char1);
-            DirectedLabeledGraph.Node node2 = new DirectedLabeledGraph.Node(char2);
+            DirectedLabeledGraph.Node<String> node1 = new DirectedLabeledGraph.Node<>(char1);
+            DirectedLabeledGraph.Node<String> node2 = new DirectedLabeledGraph.Node<>(char2);
             if(!graph.getNodes().contains(node1) || !graph.getNodes().contains(node2)){
                 unknownChars(node1, node2, graph);
                 again = again();
                 continue;
             }
 
-            List<DirectedLabeledGraph.Edge> path = findPath(char1, char2, graph);
+            List<DirectedLabeledGraph.Edge<String,String>> path = findPath(char1, char2, graph);
             if(path == null){
                 System.out.println("no path found");
                 again = again();
@@ -145,7 +145,7 @@ public class MarvelPaths {
             }
             System.out.println("Shortest path from " + char1 + " to " + char2 + " is of length " + path.size() +":");
             String previous = char1;
-            for(DirectedLabeledGraph.Edge edge : path){
+            for(DirectedLabeledGraph.Edge<String,String> edge : path){
                 String destChar = edge.getDestination().getLabel();
                 String book = edge.getLabel();
                 System.out.println(previous + " to " + destChar + " via " + book);
@@ -174,7 +174,7 @@ public class MarvelPaths {
      * @param node2 Second node that might not be in the graph
      * @param graph The graph in which we are looking for whether node1 or node2 are not in the graph
      */
-    private static void unknownChars(DirectedLabeledGraph.Node node1, DirectedLabeledGraph.Node node2, DirectedLabeledGraph graph){
+    private static void unknownChars(DirectedLabeledGraph.Node<String> node1, DirectedLabeledGraph.Node<String> node2, DirectedLabeledGraph<String,String> graph){
         if(!graph.getNodes().contains(node1)){
             System.out.println("Unknown Character: " + node1.getLabel());
         }

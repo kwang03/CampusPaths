@@ -14,12 +14,12 @@ import java.util.*;
  * <p>Abstract Invariant:
  * Two of the same node cannot be in the graph and each edge with the same parent and child must have different labels</p>
  */
-public class DirectedLabeledGraph implements Iterable<DirectedLabeledGraph.Node>{
+public class DirectedLabeledGraph<N,E> implements Iterable<DirectedLabeledGraph.Node<N>>{
 
     /**
      *Holds the adjacency list representation of our graph mapping nodes to its edges
      */
-    private HashMap<Node, Set<Edge>> adj;
+    private HashMap<Node<N>, Set<Edge<N,E>>> adj;
 
     /**
      * Indicates if checkRep() will run in its entirety if called
@@ -39,6 +39,7 @@ public class DirectedLabeledGraph implements Iterable<DirectedLabeledGraph.Node>
 
     /**Creates a new DirectedLabeledGraph with no nodes or edges
      * @spec.effects Constructs a new DirectedLabeledGraph with no nodes or edges
+     * @spec.requires Type parameters must be immutable objects
      */
     public DirectedLabeledGraph(){
         adj = new HashMap<>();
@@ -54,7 +55,7 @@ public class DirectedLabeledGraph implements Iterable<DirectedLabeledGraph.Node>
      * @spec.modifies this
      * @spec.effects Adds node to this without any edges in or out of it or does not add to graph if node already in graph
      */
-    public boolean addNode(Node node){
+    public boolean addNode(Node<N> node){
         checkRep();
         if(node == null){
             throw new IllegalArgumentException();
@@ -74,12 +75,12 @@ public class DirectedLabeledGraph implements Iterable<DirectedLabeledGraph.Node>
      * @spec.modifies this
      * @spec.effects Adds node with label without any edges in or out of it or does not add the node if node with label already in graph
      */
-    public boolean addNode(String label){
+    public boolean addNode(N label){
         checkRep();
         if(label == null){
             throw new IllegalArgumentException();
         }
-        Node node = new Node(label);
+        Node<N> node = new Node<>(label);
         checkRep();
         return addNode(node);
     }
@@ -88,7 +89,7 @@ public class DirectedLabeledGraph implements Iterable<DirectedLabeledGraph.Node>
 
     /**Adds an edge to this with label "label" between source and destination
      *
-     * @param label The weight of the edge to be added
+     * @param label The label of the edge to be added
      * @param source The Node that the added edge comes out of
      * @param destination The Node that the added edges goes into
      * @return true if the edge was added and false if the edge was not added (edge between the two nodes with same label exists)
@@ -98,19 +99,19 @@ public class DirectedLabeledGraph implements Iterable<DirectedLabeledGraph.Node>
      *               If source or destination does not exist in the graph, addEdge will add the missing node into the graph and then add the edge
      *
      */
-    public boolean addEdge(String label, Node source, Node destination){
+    public boolean addEdge(E label, Node<N> source, Node<N> destination){
         checkRep();
         if(label == null || source == null || destination == null){
             throw new IllegalArgumentException();
         }
-        Edge edge = new Edge(label, destination);
+        Edge<N,E> edge = new Edge<>(label, destination);
         if(!adj.containsKey(source)){
             addNode(source);
         }
         if(!adj.containsKey(destination)){
             addNode(destination);
         }
-        Set<Edge> s = adj.get(source);
+        Set<Edge<N,E>> s = adj.get(source);
         boolean added = s.add(edge);
         checkRep();
         return added;
@@ -126,7 +127,7 @@ public class DirectedLabeledGraph implements Iterable<DirectedLabeledGraph.Node>
      * @spec.modifies this
      * @spec.effects Removes the edge between source and destination in this or does nothing if the edge didn't exist
      */
-    public boolean removeEdge(String label, Node source, Node destination){
+    public boolean removeEdge(E label, Node<N> source, Node<N> destination){
         checkRep();
         if(label == null || source == null || destination == null){
             throw new IllegalArgumentException();
@@ -134,8 +135,8 @@ public class DirectedLabeledGraph implements Iterable<DirectedLabeledGraph.Node>
         if(!adj.containsKey(source)){
             return false;
         }
-        Edge edge = new Edge(label, destination);
-        Set<Edge> s = adj.get(source);
+        Edge<N,E> edge = new Edge<>(label, destination);
+        Set<Edge<N,E>> s = adj.get(source);
         boolean removed = s.remove(edge);
         checkRep();
         return removed;
@@ -149,7 +150,7 @@ public class DirectedLabeledGraph implements Iterable<DirectedLabeledGraph.Node>
      * @spec.modifies this
      * @spec.effects Removes node from this and removes all occurrences of node from this or does nothing if the node did not exist in the graph
      */
-    public boolean removeNode(Node node){
+    public boolean removeNode(Node<N> node){
         checkRep();
         if(node == null){
             throw new IllegalArgumentException();
@@ -168,9 +169,9 @@ public class DirectedLabeledGraph implements Iterable<DirectedLabeledGraph.Node>
      * @spec.modifies this
      * @spec.effects Removes all edges where the destination is node in this
      */
-    private void fixGraph(Node node){
-        for(Node source : adj.keySet()){
-            Set<Edge> edges = adj.get(source);
+    private void fixGraph(Node<N> node){
+        for(Node<N> source : adj.keySet()){
+            Set<Edge<N,E>> edges = adj.get(source);
             edges.removeIf(edge -> edge.getDestination().equals(node));
         }
     }
@@ -183,12 +184,12 @@ public class DirectedLabeledGraph implements Iterable<DirectedLabeledGraph.Node>
      * @spec.modifies this
      * @spec.effects Removes the node with label "label" from this and removes all occurrences of the node with "label" or does nothing if a node with "label" does not exist
      */
-    public boolean removeNode(String label){
+    public boolean removeNode(N label){
         checkRep();
         if(label == null){
             throw new IllegalArgumentException();
         }
-        Node node = new Node(label);
+        Node<N> node = new Node<>(label);
         checkRep();
         return removeNode(node);
     }
@@ -201,13 +202,13 @@ public class DirectedLabeledGraph implements Iterable<DirectedLabeledGraph.Node>
      * @spec.requires node is not null, node exists in this
      *
      */
-    public List<Node> listChildren(Node node){
+    public List<Node<N>> listChildren(Node<N> node){
         if(node == null || !adj.containsKey(node)){
             throw new IllegalArgumentException();
         }
-        Set<Edge> edges = adj.get(node);
-        List<Node> children = new ArrayList<>();
-        for(Edge edge : edges){
+        Set<Edge<N,E>> edges = adj.get(node);
+        List<Node<N>> children = new ArrayList<>();
+        for(Edge<N,E> edge : edges){
             children.add(edge.getDestination());
         }
         return children;
@@ -217,8 +218,8 @@ public class DirectedLabeledGraph implements Iterable<DirectedLabeledGraph.Node>
      *
      * @return An iterator over all of the nodes in this
      */
-    public Iterator<Node> iterator(){
-        Set<Node> nodes = new HashSet<>(adj.keySet());
+    public Iterator<Node<N>> iterator(){
+        Set<Node<N>> nodes = new HashSet<>(adj.keySet());
         return nodes.iterator();
     }
 
@@ -226,7 +227,7 @@ public class DirectedLabeledGraph implements Iterable<DirectedLabeledGraph.Node>
      *
      * @return the set of nodes that are in this
      */
-    public Set<Node> getNodes(){
+    public Set<Node<N>> getNodes(){
         return new HashSet<>(adj.keySet());
     }
 
@@ -236,11 +237,11 @@ public class DirectedLabeledGraph implements Iterable<DirectedLabeledGraph.Node>
      * @return The node in this with the label "label" or null if node does not exist in this
      * @spec.requires label is not null
      */
-    public Node getNodeByName(String label){
+    public Node<N> getNodeByName(String label){
         if(label == null){
             throw new IllegalArgumentException();
         }
-        for(Node node : adj.keySet()){
+        for(Node<N> node : adj.keySet()){
             if(node.getLabel().equals(label)){
                 return node;
             }
@@ -255,13 +256,13 @@ public class DirectedLabeledGraph implements Iterable<DirectedLabeledGraph.Node>
      * @return A set of the labels of the edges between source and destination (empty set if no edges between)
      * @spec.requires source and destination are not null, source and destination both exist in the graph
      */
-    public Set<String> getEdgesBetween(Node source, Node destination){
+    public Set<E> getEdgesBetween(Node<N> source, Node<N> destination){
         if(source == null || destination == null || !adj.containsKey(source) || !adj.containsKey(destination)){
             throw new IllegalArgumentException();
         }
-        Set<String> between = new HashSet<>();
-        Set<Edge> edges = adj.get(source);
-        for(Edge edge : edges){
+        Set<E> between = new HashSet<>();
+        Set<Edge<N,E>> edges = adj.get(source);
+        for(Edge<N,E> edge : edges){
             if(edge.getDestination().equals(destination)){
                 between.add(edge.getLabel());
             }
@@ -275,11 +276,11 @@ public class DirectedLabeledGraph implements Iterable<DirectedLabeledGraph.Node>
      * @return A set of the edges to the children of node (empty set if no children)
      * @spec.requires node is not null and node is in the graph
      */
-    public Set<Edge> getEdges(Node node){
+    public Set<Edge<N,E>> getEdges(Node<N> node){
         if(node == null || !adj.containsKey(node)){
             throw new IllegalArgumentException();
         }
-        Set<Edge> edges = adj.get(node);
+        Set<Edge<N,E>> edges = adj.get(node);
         return new HashSet<>(edges);
     }
 
@@ -313,8 +314,8 @@ public class DirectedLabeledGraph implements Iterable<DirectedLabeledGraph.Node>
      */
     @Override
     public boolean equals(Object obj) {
-        if(obj instanceof DirectedLabeledGraph) {
-            DirectedLabeledGraph graph = (DirectedLabeledGraph) obj;
+        if(obj instanceof DirectedLabeledGraph<?,?>) {
+            DirectedLabeledGraph<?,?> graph = (DirectedLabeledGraph<?,?>) obj;
             return adj.equals(graph.adj);
         } else {
             return false;
@@ -327,9 +328,9 @@ public class DirectedLabeledGraph implements Iterable<DirectedLabeledGraph.Node>
     private void checkRep(){
         assert adj != null;
         if(DEBUG) {
-            for (Node node : adj.keySet()) {
+            for (Node<N> node : adj.keySet()) {
                 assert node != null : "null node";
-                for (Edge edge : adj.get(node)) {
+                for (Edge<N,E> edge : adj.get(node)) {
                     assert edge != null : "null edge";
                     assert adj.containsKey(edge.getDestination()) : "edge with destination not in graph";
                 }
@@ -341,36 +342,36 @@ public class DirectedLabeledGraph implements Iterable<DirectedLabeledGraph.Node>
      * <b>Node</b> represents an immutable single node in a DirectedLabeledGraph
      *
      * <p>Specification fields:
-     * @spec.specfield label : String //The label or name of the node</p>
+     * @spec.specfield label : N //The label or name of the node</p>
      *
      */
-    public static class Node{
+    public static class Node<N> {
 
         //Abstract Invariant: label is the label of this node in a graph
 
         //Representation Invariant: label != null
 
         /**
-         * Holds the string label of this node
+         * Holds the label of this node
          */
-        private final String label;
+        private final N label;
 
         /**Constructs a node with label "label"
          *
          * @param label The label of the new constructed node
-         * @spec.requires label is not null
+         * @spec.requires label is not null, type parameter is immutable
          * @spec.effects creates a new Node with "label" as its label
          */
-        public Node(String label){
+        public Node(N label){
             this.label = label;
             checkRep();
         }
 
         /**returns the label of this node
          *
-         * @return the string label of this node
+         * @return the label of this node
          */
-        public String getLabel(){
+        public N getLabel(){
             return label;
         }
 
@@ -393,8 +394,8 @@ public class DirectedLabeledGraph implements Iterable<DirectedLabeledGraph.Node>
          */
         @Override
         public boolean equals(Object obj) {
-            if(obj instanceof Node) {
-                return label.equals(((Node) obj).label);
+            if(obj instanceof Node<?>) {
+                return label.equals(((Node<?>) obj).label);
             } else {
                 return false;
             }
@@ -412,10 +413,10 @@ public class DirectedLabeledGraph implements Iterable<DirectedLabeledGraph.Node>
      * <b>Edge</b> represents an immutable single edge in a DirectedLabeledGraph with a label and a destination node
      *
      * <p>Specification fields:
-     *      @spec.specfield label : String //The label or name of the edge
+     *      @spec.specfield label : E //The label or name of the edge
      *      @spec.specfield destination: Node //The destination node of this edge</p>
      */
-    public static class Edge{
+    public static class Edge<N,E> {
 
         //Abstract Invariant: label is the label of this edge in a graph and destination is the node that this edge points to
 
@@ -424,20 +425,20 @@ public class DirectedLabeledGraph implements Iterable<DirectedLabeledGraph.Node>
         /**
          * The label of the edge
          */
-        private final String label;
+        private final E label;
         /**
          * The destination node of the edge
          */
-        private final Node destination;
+        private final Node<N> destination;
 
         /**Creates an edge with a label and destination node
          *
-         * @param label The string label of the edge
+         * @param label The label of the edge
          * @param destination The node that the edge points to
-         * @spec.requires label and destination are not null
+         * @spec.requires label and destination are not null, type parameters are immutable
          * @spec.effects creates a new edge with label "label" and "destination" as its destination node
          */
-        public Edge(String label, Node destination){
+        public Edge(E label, Node<N> destination){
             this.label = label;
             this.destination = destination;
             checkRep();
@@ -447,7 +448,7 @@ public class DirectedLabeledGraph implements Iterable<DirectedLabeledGraph.Node>
          *
          * @return the label of this edge
          */
-        public String getLabel(){
+        public E getLabel(){
             return label;
         }
 
@@ -455,7 +456,7 @@ public class DirectedLabeledGraph implements Iterable<DirectedLabeledGraph.Node>
          *
          * @return the destination node
          */
-        public Node getDestination(){
+        public Node<N> getDestination(){
             return destination;
         }
 
@@ -478,8 +479,8 @@ public class DirectedLabeledGraph implements Iterable<DirectedLabeledGraph.Node>
          */
         @Override
         public boolean equals(Object obj){
-            if(obj instanceof Edge) {
-                return label.equals(((Edge) obj).getLabel()) && destination.equals(((Edge) obj).getDestination());
+            if(obj instanceof Edge<?,?>) {
+                return label.equals(((Edge<?,?>) obj).getLabel()) && destination.equals(((Edge<?,?>) obj).getDestination());
             } else {
                 return false;
             }
