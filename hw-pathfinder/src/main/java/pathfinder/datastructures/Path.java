@@ -12,6 +12,7 @@
 package pathfinder.datastructures;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -19,8 +20,10 @@ import java.util.List;
  * This represents an immutable path between two objects, particularly
  * Path#getStart() and Path#getEnd(). Also contains a cached
  * version of the total cost along this path, for efficient repeated access.
+ *
+ * Type Parameter E is the data type of the connected nodes/parts of this Path.
  */
-public class Path <E> implements Iterable<Path<E>.Segment> {
+public class Path <E> implements Iterable<Path<E>.Segment>, Comparable<Path<E>> {
 
     // AF(this) =
     //      first object in the path => start
@@ -145,6 +148,18 @@ public class Path <E> implements Iterable<Path<E>.Segment> {
                 throw new UnsupportedOperationException("Paths may not be modified.");
             }
         };
+    }
+
+    /**
+     *
+     * @param o other Path to compare this to
+     * @return 0 if the two paths are equal, a integer greater than 0 if this path is greater than other path and a integer less than 0 if this path is less than other path
+     */
+    @Override
+    public int compareTo(Path<E> o){
+        Double thisCost = this.getCost();
+        Double otherCost = o.getCost();
+        return thisCost.compareTo(otherCost);
     }
 
     /**

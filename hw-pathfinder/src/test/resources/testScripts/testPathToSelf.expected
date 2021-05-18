@@ -1,0 +1,12 @@
+#Tests Dijkstra's when asked for a self path
+
+created graph myGraph
+
+added node A to myGraph
+
+added node B to myGraph
+
+added edge 10.000 from A to B in myGraph
+
+path from A to A:
+total cost: 0.000

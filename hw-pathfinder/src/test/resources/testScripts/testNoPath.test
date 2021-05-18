@@ -1,0 +1,13 @@
+#Tests Dijkstra's when there is no path between the two requested nodes
+
+CreateGraph myGraph
+
+AddNode myGraph A
+
+AddNode myGraph B
+
+AddNode myGraph C
+
+AddEdge myGraph A B 10.0
+
+FindPath myGraph A C

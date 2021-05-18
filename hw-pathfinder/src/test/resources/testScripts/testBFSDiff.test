@@ -1,0 +1,16 @@
+#Tests Dijkstra's when the path to be found is the longest in terms of jumps
+
+CreateGraph myGraph
+
+AddNode myGraph A
+AddNode myGraph B
+AddNode myGraph C
+AddNode myGraph D
+
+AddEdge myGraph A B 1.0
+AddEdge myGraph B C 1.0
+AddEdge myGraph C D 1.0
+AddEdge myGraph A D 10.0
+AddEdge myGraph A D 5.0
+
+FindPath myGraph A D

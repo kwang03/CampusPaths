@@ -1,0 +1,15 @@
+#Tests Dijkstra's when the least cost path has two edges
+
+CreateGraph myGraph
+
+AddNode myGraph A
+AddNode myGraph B
+AddNode myGraph C
+AddNode myGraph D
+
+AddEdge myGraph A B 1.0
+AddEdge myGraph A D 1.0
+AddEdge myGraph B C 1.0
+AddEdge myGraph D C 2.0
+
+FindPath myGraph A C

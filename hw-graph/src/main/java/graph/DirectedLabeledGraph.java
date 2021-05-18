@@ -13,6 +13,9 @@ import java.util.*;
  *
  * <p>Abstract Invariant:
  * Two of the same node cannot be in the graph and each edge with the same parent and child must have different labels</p>
+ *
+ * Type Parameter N is the data type that will be held in the nodes of this DirectedLabeledGraph.
+ * Type Parameter E is the data type that will be held in the edges of this DirectedLabeledGraph.
  */
 public class DirectedLabeledGraph<N,E> implements Iterable<DirectedLabeledGraph.Node<N>>{
 
@@ -344,6 +347,7 @@ public class DirectedLabeledGraph<N,E> implements Iterable<DirectedLabeledGraph.
      * <p>Specification fields:
      * @spec.specfield label : N //The label or name of the node</p>
      *
+     * Type Parameter N is the data type held in this Node
      */
     public static class Node<N> {
 
@@ -415,6 +419,9 @@ public class DirectedLabeledGraph<N,E> implements Iterable<DirectedLabeledGraph.
      * <p>Specification fields:
      *      @spec.specfield label : E //The label or name of the edge
      *      @spec.specfield destination: Node //The destination node of this edge</p>
+     *
+     * Type Parameter N is the data type of the destination node in this Edge.
+     * Type Parameter E is the data type of the label of this Edge.
      */
     public static class Edge<N,E> {
 

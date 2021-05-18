@@ -1,0 +1,18 @@
+#Tests Dijkstra's when the least cost path has two edges
+
+created graph myGraph
+
+added node A to myGraph
+added node B to myGraph
+added node C to myGraph
+added node D to myGraph
+
+added edge 1.000 from A to B in myGraph
+added edge 1.000 from A to D in myGraph
+added edge 1.000 from B to C in myGraph
+added edge 2.000 from D to C in myGraph
+
+path from A to C:
+A to B with weight 1.000
+B to C with weight 1.000
+total cost: 2.000

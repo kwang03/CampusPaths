@@ -1,0 +1,14 @@
+#Tests Dijkstra's when there is no path between the two requested nodes
+
+created graph myGraph
+
+added node A to myGraph
+
+added node B to myGraph
+
+added node C to myGraph
+
+added edge 10.000 from A to B in myGraph
+
+path from A to C:
+no path found

@@ -1,0 +1,12 @@
+#Tests Dijkstra's when nodes are missing
+
+created graph myGraph
+
+added node A to myGraph
+
+added node B to myGraph
+
+unknown: C
+
+unknown: C
+unknown: D

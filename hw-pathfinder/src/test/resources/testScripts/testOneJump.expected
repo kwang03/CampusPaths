@@ -1,0 +1,15 @@
+#Tests Dijkstra's when the least cost path has one edge
+
+created graph myGraph
+
+added node A to myGraph
+added node B to myGraph
+added node C to myGraph
+
+added edge 1.000 from A to B in myGraph
+added edge 1.000 from A to C in myGraph
+added edge 1.000 from C to B in myGraph
+
+path from A to B:
+A to B with weight 1.000
+total cost: 1.000
