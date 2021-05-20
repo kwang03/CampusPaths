@@ -241,15 +241,15 @@ public class PathfinderTestDriver {
             unknownChars(node1, node2, graph);
             return;
         }
-        Path<DirectedLabeledGraph.Node<String>> path = CampusPaths.findPath(nodeA, nodeB, graph);
+        Path<String> path = CampusPaths.findPath(nodeA, nodeB, graph);
         output.println("path from " + nodeA + " to " + nodeB + ":");
         if(path == null){
             output.println("no path found");
             return;
         }
-        for(Path<DirectedLabeledGraph.Node<String>>.Segment segment: path){
-            String startNode = segment.getStart().getLabel();
-            String destNode = segment.getEnd().getLabel();
+        for(Path<String>.Segment segment: path){
+            String startNode = segment.getStart();
+            String destNode = segment.getEnd();
             double weight = segment.getCost();
             output.println(startNode + " to " + destNode + " with weight " + String.format("%.3f", weight));
         }

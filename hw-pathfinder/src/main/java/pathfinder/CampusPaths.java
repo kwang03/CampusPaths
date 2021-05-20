@@ -21,40 +21,39 @@ public class CampusPaths{
      * @param start The node in the graph that the path should start from
      * @param end The node in the graph that the path should end at
      * @param <E> Type parameter of the nodes in the graph
-     * @spec.requires graph, start, and end are not null. graph does not contain any negative edge weights. Nodes with labels start and end are in graph
-     * @return A Path of DirectedLabeledGraph Nodes that represents the least cost path between start and end. If no path is found in the graph, null is returned
+     * @spec.requires graph does not contain any negative edge weights. Nodes with labels start and end are in graph
+     * @throws IllegalArgumentException if graph, start, or end are null
+     * @return A Path of Points that represents the least cost path between start and end. If no path is found in the graph, null is returned
      */
-    public static <E> Path<DirectedLabeledGraph.Node<E>> findPath(E start, E end, DirectedLabeledGraph<E,Double> graph){
+    public static <E> Path<E> findPath(E start, E end, DirectedLabeledGraph<E,Double> graph){
         if(graph == null || start == null || end == null){
             throw new IllegalArgumentException();
         }
-        DirectedLabeledGraph.Node<E> startNode = new DirectedLabeledGraph.Node<>(start);
-        DirectedLabeledGraph.Node<E> endNode = new DirectedLabeledGraph.Node<>(end);
-        PriorityQueue<Path<DirectedLabeledGraph.Node<E>>> active = new PriorityQueue<>();
+        PriorityQueue<Path<E>> active = new PriorityQueue<>();
         Set<DirectedLabeledGraph.Node<E>> finished = new HashSet<>();
 
-        active.add(new Path<>(startNode));
+        active.add(new Path<>(start));
 
         while(!active.isEmpty()){
-            Path<DirectedLabeledGraph.Node<E>> minPath = active.remove();
-            DirectedLabeledGraph.Node<E> minDest = minPath.getEnd();
+            Path<E> minPath = active.remove();
+            E minDest = minPath.getEnd();
 
-            if (minDest.equals(endNode)){
+            if (minDest.equals(end)){
                 return minPath;
             }
 
-            if(finished.contains(minDest)){
+            if(finished.contains(new DirectedLabeledGraph.Node<>(minDest))){
                 continue;
             }
 
-            Set<DirectedLabeledGraph.Edge<E,Double>> edges = graph.getEdges(minDest);
+            Set<DirectedLabeledGraph.Edge<E,Double>> edges = graph.getEdges(new DirectedLabeledGraph.Node<>(minDest));
             for(DirectedLabeledGraph.Edge<E,Double> e : edges){
                 if(!finished.contains(e.getDestination())){
-                    Path<DirectedLabeledGraph.Node<E>> newPath = minPath.extend(e.getDestination(), e.getLabel());
+                    Path<E> newPath = minPath.extend(e.getDestination().getLabel(), e.getLabel());
                     active.add(newPath);
                 }
             }
-            finished.add(minDest);
+            finished.add(new DirectedLabeledGraph.Node<>(minDest));
         }
         return null;
     }
