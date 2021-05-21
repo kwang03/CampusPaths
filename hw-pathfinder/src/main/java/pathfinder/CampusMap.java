@@ -118,9 +118,9 @@ public class CampusMap implements ModelAPI {
      * Throws an exception if the representation invariant is violated
      */
     private void checkRep(){
-        assert nameMap != null : "nameMap null";
-        assert buildingMap != null : "buildingMap null";
-        assert campusMap != null : "campusMap null";
+        assert nameMap != null : "nameMap is null";
+        assert buildingMap != null : "buildingMap is null";
+        assert campusMap != null : "campusMap is null";
 
         if(DEBUG){
             for(String name : nameMap.keySet()){
