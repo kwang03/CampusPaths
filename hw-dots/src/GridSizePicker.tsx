@@ -42,7 +42,11 @@ class GridSizePicker extends Component<GridSizePickerProps, GridSizePickerState>
         // TODO - Not currently doing any validation or error handling. Should probably add some...
         const newSize: number = parseInt(event.target.value);
         if(newSize > 400){
-            console.log("Grid size too large");
+            alert("Grid size too large");
+            this.setState({
+                value: ""
+            })
+            this.props.onChange(0);
         }else if(isNaN(newSize)){
             this.setState({
                 value: ""
