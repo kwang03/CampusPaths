@@ -94,12 +94,15 @@ class Grid extends Component<GridProps, GridState> {
      */
     getCoordinates = (): [number, number][] => {
         // A hardcoded 4x4 grid. Probably not going to work when we change the grid size...
-        return [
-            [100, 100], [100, 200], [100, 300], [100, 400],
-            [200, 100], [200, 200], [200, 300], [200, 400],
-            [300, 100], [300, 200], [300, 300], [300, 400],
-            [400, 100], [400, 200], [400, 300], [400, 400]
-        ];
+        let coords: [number,number][] = [];
+        let xDiff = this.props.width / (this.props.size + 1);
+        let yDiff = this.props.height / (this.props.size + 1);
+        for(let i = xDiff; i <= xDiff * this.props.size + 1; i += xDiff){
+            for(let j = yDiff; j <= yDiff * this.props.size + 1; j += yDiff){
+                coords.push([i,j]);
+            }
+        }
+        return coords;
     };
 
     drawCircle = (ctx: CanvasRenderingContext2D, coordinate: [number, number]) => {
@@ -116,7 +119,7 @@ class Grid extends Component<GridProps, GridState> {
         return (
             <div id="grid">
                 <canvas ref={this.canvasReference} width={this.props.width} height={this.props.height}/>
-                <p>Current Grid Size: 4</p>
+                <p>Current Grid Size: {this.props.size}</p>
             </div>
         );
     }

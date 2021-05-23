@@ -30,7 +30,7 @@ class EdgeList extends Component<EdgeListProps> {
                     rows={5}
                     cols={30}
                     onChange={() => {console.log('textarea onChange was called');}}
-                    value={"I'm stuck..."}
+                    value={"I'm not stuck..."}
                 /> <br/>
                 <button onClick={() => {console.log('Draw onClick was called');}}>Draw</button>
                 <button onClick={() => {console.log('Clear onClick was called');}}>Clear</button>
