@@ -15,6 +15,8 @@ interface GridProps {
     size: number;    // size of the grid to display
     width: number;   // width of the canvas on which to draw
     height: number;  // height of the canvas on which to draw
+
+    edgeList: string[][]; //List of edges to draw
 }
 
 interface GridState {
@@ -63,6 +65,7 @@ class Grid extends Component<GridProps, GridState> {
         background.src = "./image.jpg";
     }
 
+    //TODO: Fix Weird "Line specifications out of bounds" stuff and colored border of last drawn circle
     redraw = () => {
         if (this.canvasReference.current === null) {
             throw new Error("Unable to access canvas.");
@@ -86,7 +89,38 @@ class Grid extends Component<GridProps, GridState> {
         for (let coordinate of coordinates) {
             this.drawCircle(ctx, coordinate);
         }
+
+        //Draw all the lines.
+        ctx.lineWidth = 2;
+        for(let i = 0 ; i < this.props.edgeList.length; i++){
+            this.drawLine(ctx, this.props.edgeList[i]);
+        }
     };
+
+    drawLine = (ctx: CanvasRenderingContext2D, line:string[]) => {
+        ctx.strokeStyle = line[2];
+        let xDiff = this.props.width / (this.props.size + 1);
+        let yDiff = this.props.height / (this.props.size + 1);
+        for(let i = 0; i < 2; i++){
+            let point = line[i];
+            let pointParts = point.split(",");
+            if(pointParts.length !== 2){
+                alert("Invalid line specifications");
+            }
+            let x : number = parseInt(pointParts[0]);
+            let y : number = parseInt(pointParts[1]);
+            if(x < 0 || y < 0 || x > this.props.size - 1 || y > this.props.size - 1){
+                alert("Line specifications out of bounds");
+                break;
+            }
+            if(i === 0){
+                ctx.moveTo((x * xDiff) + xDiff, (y * yDiff) + yDiff);
+            }else{
+                ctx.lineTo((x * xDiff) + xDiff, (y * yDiff) + yDiff);
+                ctx.stroke();
+            }
+        }
+    }
 
     /**
      * Returns an array of coordinate pairs that represent all the points where grid dots should

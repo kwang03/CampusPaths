@@ -17,11 +17,45 @@ interface EdgeListProps {
                                  // change the type of edges so it isn't `any`
 }
 
+interface EdgeListState{
+    value:string;
+}
+
 /**
  * A text field that allows the user to enter the list of edges.
  * Also contains the buttons that the user will use to interact with the app.
  */
-class EdgeList extends Component<EdgeListProps> {
+class EdgeList extends Component<EdgeListProps,EdgeListState> {
+
+    constructor(props: EdgeListProps) {
+        super(props);
+        this.state = {
+            value:"",
+        };
+    }
+
+    createList = () => {
+        let finalArray: string[][] = [];
+        let lines = this.state.value.split('\n');
+        for(let i = 0; i < lines.length; i++){
+            let line = lines[i];
+            let components: string[] = line.split(" ");
+            if(components.length !== 3){
+                alert("Invalid line specifications");
+                break;
+            }
+            finalArray.push(components);
+        }
+        return finalArray;
+    }
+
+    onInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+        this.setState({
+                value:event.target.value,
+            }
+        )
+    };
+
     render() {
         return (
             <div id="edge-list">
@@ -29,11 +63,11 @@ class EdgeList extends Component<EdgeListProps> {
                 <textarea
                     rows={5}
                     cols={30}
-                    onChange={() => {console.log('textarea onChange was called');}}
-                    value={"I'm not stuck..."}
+                    onChange={this.onInputChange}
+                    value={this.state.value}
                 /> <br/>
-                <button onClick={() => {console.log('Draw onClick was called');}}>Draw</button>
-                <button onClick={() => {console.log('Clear onClick was called');}}>Clear</button>
+                <button onClick={() => {this.props.onChange(this.createList())}}>Draw</button>
+                <button onClick={() => {this.props.onChange([])}}>Clear</button>
             </div>
         );
     }
