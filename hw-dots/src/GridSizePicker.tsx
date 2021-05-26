@@ -18,7 +18,7 @@ interface GridSizePickerProps {
 }
 
 interface GridSizePickerState{
-    value:string;
+    value:string; //The text that is actually displayed in the GridSizePicker box.
 }
 
 
@@ -31,14 +31,13 @@ class GridSizePicker extends Component<GridSizePickerProps, GridSizePickerState>
         };
     }
 
-    onInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    onInputChange = (event: React.ChangeEvent<HTMLInputElement>)  : void => {
         // Every event handler with JS can optionally take a single parameter that
         // is an "event" object - contains information about an event. For mouse clicks,
         // it'll tell you thinks like what x/y coordinates the click was at. For text
         // box updates, it'll tell you the new contents of the text box, like we're using
         // below.
         //
-        // TODO - Not currently doing any validation or error handling. Should probably add some...
         const newSize: number = parseInt(event.target.value);
         if(newSize > 400){
             alert("Grid size too large");

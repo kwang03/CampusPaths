@@ -32,13 +32,14 @@ class App extends Component<{}, AppState> { // <- {} means no props.
         };
     }
 
-    updateGridSize = (newSize: number) => {
+    updateGridSize = (newSize: number) :void => {
         this.setState({
             gridSize: newSize
         });
     };
 
-    updateGridLines = (edgeList: string[][]) => {
+    //Updates the state of the edgeList of the lines on the grid
+    updateGridLines = (edgeList: string[][]): void => {
         this.setState({
             edgeList: edgeList,
         });

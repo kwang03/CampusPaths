@@ -65,7 +65,7 @@ class Grid extends Component<GridProps, GridState> {
         background.src = "./image.jpg";
     }
 
-    //TODO: Fix Weird "Line specifications out of bounds" stuff and colored border of last drawn circle
+
     redraw = () => {
         if (this.canvasReference.current === null) {
             throw new Error("Unable to access canvas.");
@@ -93,25 +93,30 @@ class Grid extends Component<GridProps, GridState> {
         //Draw all the lines.
         ctx.lineWidth = 2;
         for(let i = 0 ; i < this.props.edgeList.length; i++){
-            this.drawLine(ctx, this.props.edgeList[i]);
+            if(!this.drawLine(ctx, this.props.edgeList[i])){
+                break;
+            }
         }
     };
 
-    drawLine = (ctx: CanvasRenderingContext2D, line:string[]) => {
-        ctx.strokeStyle = line[2];
+    //Draws a single line on the grid specified by a single array of strings from edgeList
+    drawLine = (ctx: CanvasRenderingContext2D, line:string[]) : boolean => {
         let xDiff = this.props.width / (this.props.size + 1);
         let yDiff = this.props.height / (this.props.size + 1);
-        for(let i = 0; i < 2; i++){
+        ctx.beginPath();
+        ctx.strokeStyle = line[2]; //line[2] is where the color is inputted
+        for(let i = 0; i < 2; i++){ //line[0] is the string representing the starting point, line[1] represents the ending point
             let point = line[i];
             let pointParts = point.split(",");
             if(pointParts.length !== 2){
-                alert("Invalid line specifications");
+                alert("Invalid coordinate specifications");
+                return false;
             }
             let x : number = parseInt(pointParts[0]);
             let y : number = parseInt(pointParts[1]);
             if(x < 0 || y < 0 || x > this.props.size - 1 || y > this.props.size - 1){
-                alert("Line specifications out of bounds");
-                break;
+                alert("Line specifications out of bounds, press clear to reset");
+                return false;
             }
             if(i === 0){
                 ctx.moveTo((x * xDiff) + xDiff, (y * yDiff) + yDiff);
@@ -120,6 +125,7 @@ class Grid extends Component<GridProps, GridState> {
                 ctx.stroke();
             }
         }
+        return true;
     }
 
     /**

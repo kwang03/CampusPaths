@@ -12,13 +12,13 @@
 import React, {Component} from 'react';
 
 interface EdgeListProps {
-    onChange(edges: any): void;  // called when a new edge list is ready
+    onChange(edges: string[][]): void;  // called when a new edge list is ready
                                  // once you decide how you want to communicate the edges to the App, you should
                                  // change the type of edges so it isn't `any`
 }
 
 interface EdgeListState{
-    value:string;
+    value:string; //The actual text in the text box displayed
 }
 
 /**
@@ -34,11 +34,15 @@ class EdgeList extends Component<EdgeListProps,EdgeListState> {
         };
     }
 
+    //Creates a array of arrays of strings where each array of strings are the parts of each line inputted
     createList = () => {
         let finalArray: string[][] = [];
         let lines = this.state.value.split('\n');
         for(let i = 0; i < lines.length; i++){
             let line = lines[i];
+            if(line==="") {
+                continue;
+            }
             let components: string[] = line.split(" ");
             if(components.length !== 3){
                 alert("Invalid line specifications");
@@ -49,6 +53,7 @@ class EdgeList extends Component<EdgeListProps,EdgeListState> {
         return finalArray;
     }
 
+    //Changes what is in the text box after text is entered in it
     onInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
         this.setState({
                 value:event.target.value,
