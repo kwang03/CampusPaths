@@ -5,5 +5,5 @@ include 'hw-poly'
 include 'hw-graph'
 include 'hw-marvel'
 include 'hw-pathfinder'
-include 'hw-campuspaths'
+include 'hw-campuspaths-server'
 
