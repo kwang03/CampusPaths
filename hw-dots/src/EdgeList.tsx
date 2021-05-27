@@ -45,7 +45,7 @@ class EdgeList extends Component<EdgeListProps,EdgeListState> {
             }
             let components: string[] = line.split(" ");
             if(components.length !== 3){
-                alert("Invalid line specifications");
+                alert("Invalid line specifications, please enter in the form x1,y1 x2,y2 color");
                 break;
             }
             finalArray.push(components);

@@ -109,7 +109,7 @@ class Grid extends Component<GridProps, GridState> {
             let point = line[i];
             let pointParts = point.split(",");
             if(pointParts.length !== 2){
-                alert("Invalid coordinate specifications");
+                alert("Invalid coordinate specifications, press clear or fix error. Correct form: x1,y1 x2,y2 color");
                 return false;
             }
             let x : number = parseInt(pointParts[0]);

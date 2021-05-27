@@ -40,7 +40,7 @@ class GridSizePicker extends Component<GridSizePickerProps, GridSizePickerState>
         //
         const newSize: number = parseInt(event.target.value);
         if(newSize > 400){
-            alert("Grid size too large");
+            alert("Grid size too large, please choose a grid size less than 400");
             this.setState({
                 value: ""
             })
@@ -50,8 +50,13 @@ class GridSizePicker extends Component<GridSizePickerProps, GridSizePickerState>
                 value: ""
             })
             this.props.onChange(0);
-        }
-        else {
+        }else if(newSize < 0){
+            alert("Negative grid size, please input a valid grid size");
+            this.setState({
+                value: ""
+            })
+            this.props.onChange(0);
+        } else {
             this.setState({
                 value: newSize.toString()
             });
