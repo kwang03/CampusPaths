@@ -18,6 +18,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * A utility class capable of parsing data in campus buildings and
@@ -104,12 +105,12 @@ public class CampusPathsParser {
     private static List<String> readLines(String filename) {
         try {
             // See MarvelParser.java (from hw-marvel) for an explanation of this code
-            URL url = CampusPathsParser.class.getResource("/data/" + filename);
-            if (url == null) {
+            InputStream stream = CampusPathsParser.class.getResourceAsStream("/data/" + filename);
+            if (stream == null) {
                 throw new FileNotFoundException("No such file: " + filename);
             }
-            return Files.readAllLines(Path.of(url.toURI()));
-        } catch (IOException | URISyntaxException e) {
+            return new BufferedReader(new InputStreamReader(stream)).lines().collect(Collectors.toList());
+        } catch (IOException e) {
             throw new ParserException("Cannot create parser", e);
         }
     }
