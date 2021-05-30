@@ -10,7 +10,7 @@
  */
 
 import React, {Component} from 'react';
-import "./MapView";
+import "./MapView.css";
 
 interface MapViewState {
     backgroundImage: HTMLImageElement | null;
