@@ -10,12 +10,82 @@
  */
 
 import React, {Component} from 'react';
+import MapView from "./MapView";
+import PathFinder from "./PathFinder";
 
-class App extends Component<{}, {}> {
+export interface Path{
+    cost:number;
+    start:Point;
+    path:Segment[];
+}
+
+interface Point{
+    x:number;
+    y:number;
+}
+
+interface Segment{
+    start:Point;
+    end:Point;
+    cost:number;
+}
+
+interface AppState {
+    pathStart: string;  // Start of displayed path
+    pathEnd:string; //End of displayed path
+    path: Path | undefined;
+}
+
+
+
+class App extends Component<{}, AppState> {
+
+    constructor(props: any) {
+        super(props);
+        this.state = {
+            pathStart:"",
+            pathEnd:"",
+            path:undefined
+        };
+    }
+
+    //Callback method for when the draw button is clicked
+    onDraw = (start:string, end:string): void => {
+        this.setState({
+            pathStart:start,
+            pathEnd:end,
+        })
+        this.makeRequest();
+    }
+
+    makeRequest = async () => {
+        try {
+            let response = await fetch("http://localhost:4567/path?start=".concat(this.state.pathStart, "&end=", this.state.pathEnd));
+            if (!response.ok) {
+                alert("The status is wrong! Expected: 200, Was: " + response.status);
+                return;
+            }
+            let path;
+            if(response.status === 201){
+                path = undefined;
+            }else{
+                path = await response.json() as Path;
+            }
+            this.setState({
+                path: path
+            })
+        } catch (e) {
+            alert("There was an error contacting the server.");
+            console.log(e);
+        }
+    };
 
     render() {
         return (
-            <p>Here's the beginning of your AMAZING CampusPaths GUI!</p>
+            <div>
+                <PathFinder onChange = {this.onDraw}/>
+                <MapView path={this.state.path}/>
+            </div>
         );
     }
 

@@ -11,12 +11,21 @@
 
 import React, {Component} from 'react';
 import "./MapView.css";
+import {Path} from "./App";
 
 interface MapViewState {
     backgroundImage: HTMLImageElement | null;
+    cost: number;
+
 }
 
-class MapView extends Component<{}, MapViewState> {
+interface MapViewProps{
+    path: Path | undefined;
+}
+
+
+
+class MapView extends Component<MapViewProps, MapViewState> {
 
     // NOTE:
     // This component is a suggestion for you to use, if you would like to.
@@ -27,20 +36,24 @@ class MapView extends Component<{}, MapViewState> {
 
     canvas: React.RefObject<HTMLCanvasElement>;
 
-    constructor(props: {}) {
+    constructor(props: MapViewProps) {
         super(props);
         this.state = {
-            backgroundImage: null
+            backgroundImage: null,
+            cost: 0,
         };
         this.canvas = React.createRef();
     }
 
     componentDidMount() {
         // Might want to do something here?
+        this.fetchAndSaveImage();
+        this.drawBackgroundImage();
     }
 
     componentDidUpdate() {
         // Might want something here too...
+        this.drawBackgroundImage();
     }
 
     fetchAndSaveImage() {
@@ -70,7 +83,26 @@ class MapView extends Component<{}, MapViewState> {
             canvas.height = this.state.backgroundImage.height;
             ctx.drawImage(this.state.backgroundImage, 0, 0);
         }
+        this.drawPath(ctx);
     }
+
+    drawPath = (ctx: CanvasRenderingContext2D) => {
+        ctx.lineWidth = 4;
+        ctx.strokeStyle = "red";
+        ctx.beginPath();
+        if(this.props.path !== undefined){
+            let roads = this.props.path["path"];
+            for(let seg of roads){
+                let start = seg["start"];
+                let end = seg["end"];
+                ctx.moveTo(start["x"], start["y"]);
+                ctx.lineTo(end["x"], end["y"]);
+                ctx.stroke();
+            }
+        }
+    }
+
+
 
     render() {
         return (
