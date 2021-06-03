@@ -13,17 +13,20 @@ import React, {Component} from 'react';
 import MapView from "./MapView";
 import PathFinder from "./PathFinder";
 
+//Path interface consisting of a total cost, a start Point and a array of Segments
 export interface Path{
     cost:number;
     start:Point;
     path:Segment[];
 }
 
+//Point interface consisting of just a x and y coordinate
 interface Point{
     x:number;
     y:number;
 }
 
+//Segment interface consisting of a starting Point, an ending Point, and a segment cost
 interface Segment{
     start:Point;
     end:Point;
@@ -33,7 +36,7 @@ interface Segment{
 interface AppState {
     pathStart: string;  // Start of displayed path
     pathEnd:string; //End of displayed path
-    path: Path | undefined;
+    path: Path | undefined; //The path that is drawn on the map
 }
 
 
@@ -54,10 +57,13 @@ class App extends Component<{}, AppState> {
         this.setState({
             pathStart:start,
             pathEnd:end,
-        })
-        this.makeRequest();
+        },
+            this.makeRequest
+        )
+
     }
 
+    //Makes request to Spark server regarding the path to draw, sets state to be the requested path
     makeRequest = async () => {
         try {
             let response = await fetch("http://localhost:4567/path?start=".concat(this.state.pathStart, "&end=", this.state.pathEnd));
@@ -72,7 +78,7 @@ class App extends Component<{}, AppState> {
                 path = await response.json() as Path;
             }
             this.setState({
-                path: path
+                path: path,
             })
         } catch (e) {
             alert("There was an error contacting the server.");

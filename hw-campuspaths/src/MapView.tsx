@@ -15,12 +15,10 @@ import {Path} from "./App";
 
 interface MapViewState {
     backgroundImage: HTMLImageElement | null;
-    cost: number;
-
 }
 
 interface MapViewProps{
-    path: Path | undefined;
+    path: Path | undefined; //Path to be drawn on the map
 }
 
 
@@ -40,7 +38,6 @@ class MapView extends Component<MapViewProps, MapViewState> {
         super(props);
         this.state = {
             backgroundImage: null,
-            cost: 0,
         };
         this.canvas = React.createRef();
     }
@@ -55,6 +52,8 @@ class MapView extends Component<MapViewProps, MapViewState> {
         // Might want something here too...
         this.drawBackgroundImage();
     }
+
+
 
     fetchAndSaveImage() {
         // Creates an Image object, and sets a callback function
@@ -86,6 +85,7 @@ class MapView extends Component<MapViewProps, MapViewState> {
         this.drawPath(ctx);
     }
 
+    //Draws the path according to the path prop
     drawPath = (ctx: CanvasRenderingContext2D) => {
         ctx.lineWidth = 4;
         ctx.strokeStyle = "red";

@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {ButtonHTMLAttributes, Component} from 'react';
 
 interface PathFinderState{
     start:string; //The current selected start building
@@ -8,7 +8,7 @@ interface PathFinderState{
 }
 
 interface PathFinderProps{
-    onChange(start: string, end:string): void;
+    onChange(start: string, end:string): void; //The call back method that is called when the buttons are pressed
 }
 
 /**
@@ -19,20 +19,20 @@ class PathFinder extends Component<PathFinderProps, PathFinderState> {
         super(props);
         this.state = {
             shortNames:[],
-            options:[],
+            options:"",
             start:"",
-            end:""
+            end:"",
         };
         this.makeRequest();
     }
 
     //Sets state to the default state when clear is clicked
     onClear = () => {
+        this.props.onChange("","");
         this.setState({
             start:"",
-            end:""
+            end:"",
         });
-        this.props.onChange("","");
     }
 
     //Makes request to Spark server, fetching the data about the building names
@@ -59,6 +59,7 @@ class PathFinder extends Component<PathFinderProps, PathFinderState> {
         this.setState({
             start:event.target.value,
         });
+
     }
     //Changes this components state when a different end building is chosen
     handleEndChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -70,11 +71,11 @@ class PathFinder extends Component<PathFinderProps, PathFinderState> {
     render(){
         return (
             <div>
-                <select onChange={this.handleStartChange}>
+                <select value={this.state.start} onChange={this.handleStartChange}>
                     <option value="">-----{"Select Start Building"}-----</option>
                     {this.state.shortNames.map((building) => <option value={building}>{this.state.options[building]}</option>)}
                 </select>
-                <select onChange={this.handleEndChange}>
+                <select value={this.state.end} onChange={this.handleEndChange}>
                     <option value="">-----{"Select End Building"}-----</option>
                     {this.state.shortNames.map((building) => <option value={building}>{this.state.options[building]}</option>)}
                 </select>
