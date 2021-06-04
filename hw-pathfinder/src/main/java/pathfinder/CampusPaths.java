@@ -29,32 +29,32 @@ public class CampusPaths{
         if(graph == null || start == null || end == null){
             throw new IllegalArgumentException();
         }
-        PriorityQueue<Path<E>> active = new PriorityQueue<>();
-        Set<DirectedLabeledGraph.Node<E>> finished = new HashSet<>();
+        PriorityQueue<Path<E>> active = new PriorityQueue<>(); //Queue of paths to still be examined
+        Set<DirectedLabeledGraph.Node<E>> finished = new HashSet<>(); //Set of nodes we have found shortest path to
 
         active.add(new Path<>(start));
 
         while(!active.isEmpty()){
-            Path<E> minPath = active.remove();
-            E minDest = minPath.getEnd();
+            Path<E> minPath = active.remove(); //Shortest path currently in active queue
+            E minDest = minPath.getEnd(); //The node that the path goes to
 
-            if (minDest.equals(end)){
+            if (minDest.equals(end)){ //We found the node we were looking for!
                 return minPath;
             }
 
-            if(finished.contains(new DirectedLabeledGraph.Node<>(minDest))){
+            if(finished.contains(new DirectedLabeledGraph.Node<>(minDest))){ //Already found a shorter path to the node
                 continue;
             }
 
             Set<DirectedLabeledGraph.Edge<E,Double>> edges = graph.getEdges(new DirectedLabeledGraph.Node<>(minDest));
-            for(DirectedLabeledGraph.Edge<E,Double> e : edges){
+            for(DirectedLabeledGraph.Edge<E,Double> e : edges){ //Go through all of the edges that the node has
                 if(!finished.contains(e.getDestination())){
-                    Path<E> newPath = minPath.extend(e.getDestination().getLabel(), e.getLabel());
-                    active.add(newPath);
+                    Path<E> newPath = minPath.extend(e.getDestination().getLabel(), e.getLabel()); //Extend the current path with the additional edge
+                    active.add(newPath); //Add the new path to the queue of paths
                 }
             }
-            finished.add(new DirectedLabeledGraph.Node<>(minDest));
+            finished.add(new DirectedLabeledGraph.Node<>(minDest)); //Add the node we just looked at to the finished set
         }
-        return null;
+        return null; //No path found return null
     }
 }

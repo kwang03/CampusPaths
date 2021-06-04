@@ -12,6 +12,7 @@
 import React, {Component} from 'react';
 import MapView from "./MapView";
 import PathFinder from "./PathFinder";
+import "./App.css"
 
 //Path interface consisting of a total cost, a start Point and a array of Segments
 export interface Path{

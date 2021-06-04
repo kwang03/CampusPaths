@@ -69,23 +69,29 @@ public class CampusMap implements ModelAPI {
      * @throws CampusPathsParser.ParserException if the files cannot be found or parsed as expected
      */
     public CampusMap(){
-        campusMap = new DirectedLabeledGraph<>();
+        buildGraph();
         buildingMap = new HashMap<>();
         nameMap = new HashMap<>();
 
         List<CampusBuilding> buildings = CampusPathsParser.parseCampusBuildings(buildingsFile);
+        for(CampusBuilding building : buildings){
+            nameMap.put(building.getShortName(), building.getLongName());
+            buildingMap.put(building.getShortName(), new Point(building.getX(),building.getY()));
+        }
+        checkRep();
+    }
+
+    /**
+     * Private helper method that parses the pathsFile and builds a DirectedLabeledGraph out of it
+     */
+    private void buildGraph(){
+        campusMap = new DirectedLabeledGraph<>();
         List<CampusPath> paths = CampusPathsParser.parseCampusPaths(pathsFile);
         for(CampusPath path : paths){
             Point source = new Point(path.getX1(), path.getY1());
             Point dest = new Point(path.getX2(), path.getY2());
             campusMap.addEdge(path.getDistance(), new DirectedLabeledGraph.Node<>(source), new DirectedLabeledGraph.Node<>(dest));
         }
-
-        for(CampusBuilding building : buildings){
-            nameMap.put(building.getShortName(), building.getLongName());
-            buildingMap.put(building.getShortName(), new Point(building.getX(),building.getY()));
-        }
-        checkRep();
     }
 
     @Override
