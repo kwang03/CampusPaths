@@ -22,7 +22,9 @@ interface MapViewProps{
 }
 
 
-
+/**
+ * MapView is the component of the Campus Map App that is the campus map itself and the path drawn on the map
+ */
 class MapView extends Component<MapViewProps, MapViewState> {
 
     // NOTE:
@@ -69,6 +71,7 @@ class MapView extends Component<MapViewProps, MapViewState> {
         background.src = "./campus_map.jpg";
     }
 
+    //Draws campus map and the path requested
     drawBackgroundImage() {
         let canvas = this.canvas.current;
         if (canvas === null) throw Error("Unable to draw, no canvas ref.");
@@ -90,6 +93,7 @@ class MapView extends Component<MapViewProps, MapViewState> {
         ctx.lineWidth = 4;
         ctx.strokeStyle = "red";
         ctx.beginPath();
+        //If paths is undefined, nothing is drawn
         if(this.props.path !== undefined){
             let roads = this.props.path["path"];
             for(let seg of roads){
